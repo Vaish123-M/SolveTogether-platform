@@ -1,6 +1,90 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+/* Minimal plain CSS (no Tailwind) so the app can load while Tailwind is fixed */
+:root {
+  --bg: #f7fafc;
+  --card: #ffffff;
+  /* warm palette */
+  --accent: #f97316; /* warm orange */
+  --accent-2: #fb923c; /* lighter accent */
+  --muted: #6b7280;
+  --warm-1: #fff7ed; /* light peach */
+  --warm-2: #fffaf0; /* pale cream */
+}
 
-/* You can add custom styles below */
-body { @apply bg-white; }
+* { box-sizing: border-box; }
+html,body,#root { height:100%; margin:0; }
+body {
+  font-family: Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+  background: var(--bg);
+  color: #111827;
+}
+
+.app-center { display:flex; align-items:center; justify-content:center; min-height:100vh; }
+.card { background:var(--card); padding:24px; border-radius:8px; box-shadow:0 6px 18px rgba(15,23,42,0.08); max-width:680px; }
+.title { font-size:28px; font-weight:700; color:var(--accent); margin:0 0 8px 0; }
+.subtitle { color:var(--muted); margin:0 0 16px 0; }
+.btn { display:inline-block; padding:10px 16px; border-radius:6px; text-decoration:none; font-weight:600; }
+.btn-primary { background:var(--accent); color:#fff; }
+.btn-ghost { background:transparent; color:var(--accent); border:1px solid rgba(79,70,229,0.12); }
+.features { display:flex; gap:12px; margin-top:18px; }
+.feature { background:#fff; padding:12px; border-radius:6px; flex:1; box-shadow:0 4px 12px rgba(15,23,42,0.04); }
+.feature h3 { margin:0 0 6px 0; font-size:16px; }
+.feature p { margin:0; color:var(--muted); font-size:14px; }
+
+footer { margin-top:18px; text-align:center; color:var(--muted); font-size:13px; }
+
+/* Landing page specific styles */
+.skip-link { position: absolute; left: -9999px; top: auto; width:1px; height:1px; overflow:hidden; }
+.skip-link:focus { left:10px; top:10px; width:auto; height:auto; background:#fff; padding:8px; border-radius:4px; box-shadow:0 2px 8px rgba(0,0,0,0.08); }
+
+.site-header { display:flex; align-items:center; justify-content:space-between; padding:18px 24px; }
+.brand { display:flex; align-items:center; gap:10px; text-decoration:none; color:var(--accent); font-weight:800; font-size:18px; }
+.nav { display:flex; gap:12px; align-items:center; }
+.nav a { color:var(--muted); text-decoration:none; padding:8px 10px; border-radius:6px; }
+.nav a:hover, .nav a:focus { color:var(--accent); outline:none; }
+
+.hero { background: linear-gradient(180deg, var(--warm-1) 0%, var(--warm-2) 100%); padding:48px 16px; }
+.hero-inner { max-width:1100px; margin:0 auto; display:flex; gap:28px; align-items:center; flex-wrap:wrap; }
+.hero-copy { flex:1 1 420px; }
+.hero-visual { flex:0 0 360px; display:flex; justify-content:center; }
+.hero-title { font-size:40px; line-height:1.05; margin:0 0 12px 0; color:#b45309; }
+.hero-lead { font-size:18px; color:#6b4a2a; margin:0 0 18px 0; }
+.ctas { display:flex; gap:12px; align-items:center; }
+.btn { display:inline-block; padding:12px 18px; border-radius:10px; text-decoration:none; font-weight:700; font-size:15px; }
+.btn-primary { background:linear-gradient(90deg,var(--accent),var(--accent-2)); color: white; box-shadow:0 8px 24px rgba(249,115,22,0.18); }
+.btn-secondary { background:transparent; color:var(--accent); border:1px solid rgba(249,115,22,0.14); }
+
+.features-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:16px; margin-top:28px; }
+.feature-card { background:var(--card); padding:16px; border-radius:10px; box-shadow:0 6px 16px rgba(15,23,42,0.06); }
+.feature-card h4 { margin:0 0 8px 0; color:#92400e; }
+.feature-card p { margin:0; color:var(--muted); }
+
+/* Responsive tweaks */
+@media (max-width:800px) {
+  .hero-inner { flex-direction:column-reverse; align-items:flex-start; }
+  .hero-visual { width:100%; }
+  .hero-title { font-size:30px; }
+}
+body {
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background: linear-gradient(to bottom, #eef2ff, #fff);
+}
+
+.section-title {
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: #4338ca;
+  text-align: center;
+}
+
+.btn-primary {
+  background-color: #4f46e5;
+  color: white;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.375rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.btn-primary:hover {
+  background-color: #4338ca;
+}

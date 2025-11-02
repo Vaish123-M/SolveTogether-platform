@@ -13,12 +13,9 @@
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
     "react-router-dom": "^7.9.5",
-    "tailwindcss": "^4.1.16",
     "yup": "^1.7.1"
   },
   "devDependencies": {
-    "@tailwindcss/postcss": "^4.1.16",
-    "autoprefixer": "^10.4.21",
     "react-scripts": "^5.0.1"
   },
   "browserslist": {

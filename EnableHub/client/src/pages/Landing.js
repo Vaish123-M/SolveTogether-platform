@@ -1,5 +1,4 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
 
 const features = [
   {
@@ -18,43 +17,64 @@ const features = [
 
 export default function Landing() {
   return (
-    <main className="min-h-screen bg-gradient-to-b from-indigo-50 to-white flex items-center">
-      <div className="container mx-auto px-6 py-20">
-        <div className="max-w-3xl mx-auto text-center">
-          <h1 className="text-4xl sm:text-5xl font-extrabold text-indigo-700">EnableHub</h1>
-          <p className="mt-4 text-lg text-gray-600">
-            A collaborative platform to learn, solve problems, and build together.
-          </p>
+    <main>
+      <a className="skip-link" href="#main">Skip to content</a>
+      <header className="site-header">
+        <a className="brand" href="#">EnableHub</a>
+        <nav className="nav" aria-label="Primary">
+          <a href="#features">Features</a>
+          <a href="#about">About</a>
+          <a href="#contact">Contact</a>
+        </nav>
+      </header>
 
-          <div className="mt-8 flex justify-center gap-4">
-            <Link
-              to="/signup"
-              className="inline-block bg-indigo-600 text-white px-6 py-3 rounded-md shadow hover:bg-indigo-700"
-            >
-              Get started
-            </Link>
-            <Link
-              to="/about"
-              className="inline-block px-6 py-3 rounded-md border border-indigo-200 text-indigo-700 hover:bg-indigo-50"
-            >
-              Learn more
-            </Link>
+      <section className="hero" role="region" aria-label="Intro">
+        <div className="hero-inner">
+          <div className="hero-copy">
+            <h1 className="hero-title">EnableHub — Learn together, belong together</h1>
+            <p className="hero-lead">A warm, inclusive platform connecting disabled learners with contributors and mentors. Curated paths, real-time feedback, and community support.</p>
+
+            <div className="ctas">
+              <a className="btn btn-primary" href="#signup">Get started</a>
+              <a className="btn btn-secondary" href="#about">Learn more</a>
+            </div>
+
+            <div className="features-grid" id="features">
+              {features.map((f) => (
+                <div key={f.title} className="feature-card" role="article">
+                  <h4>{f.title}</h4>
+                  <p>{f.desc}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="hero-visual" aria-hidden="true">
+            {/* simple SVG illustration */}
+            <svg width="280" height="220" viewBox="0 0 280 220" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Illustration of people collaborating">
+              <rect x="0" y="0" width="280" height="220" rx="16" fill="#fff" stroke="rgba(0,0,0,0.03)"/>
+              <circle cx="70" cy="80" r="28" fill="#FFDAB6" />
+              <circle cx="140" cy="60" r="26" fill="#FFE6CC" />
+              <circle cx="210" cy="90" r="30" fill="#FFEDD5" />
+              <rect x="45" y="140" width="190" height="12" rx="6" fill="#FFF3E0" />
+              <rect x="55" y="160" width="160" height="8" rx="4" fill="#FFF7ED" />
+            </svg>
           </div>
         </div>
+      </section>
 
-        <section className="mt-12 grid grid-cols-1 sm:grid-cols-3 gap-6">
-          {features.map((f) => (
-            <div key={f.title} className="bg-white p-6 rounded-lg shadow">
-              <h3 className="text-xl font-semibold text-gray-800">{f.title}</h3>
-              <p className="mt-2 text-gray-600">{f.desc}</p>
-            </div>
-          ))}
-        </section>
+      <section id="about" style={{padding:'28px 16px'}}>
+        <div style={{maxWidth:1100, margin:'0 auto'}}>
+          <h2 style={{color:'#b45309'}}>About EnableHub</h2>
+          <p style={{color:'#6b4a2a'}}>We design with accessibility and emotional warmth in mind — inclusive onboarding, assistive workflows, and community-first learning.</p>
+        </div>
+      </section>
 
-        <footer className="mt-12 text-center text-sm text-gray-500">
+      <footer style={{padding:'18px 16px'}}>
+        <div style={{maxWidth:1100, margin:'0 auto'}}>
           © {new Date().getFullYear()} EnableHub — Built with care.
-        </footer>
-      </div>
+        </div>
+      </footer>
     </main>
   )
 }
