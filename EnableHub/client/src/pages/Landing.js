@@ -1,31 +1,11 @@
 import React from 'react'
 
-const features = [
-  {
-    title: 'Collaborative learning',
-    desc: 'Work together on problems, share solutions and learn from peers.',
-  },
-  {
-    title: 'Accessible resources',
-    desc: 'Curated learning paths and resources for all skill levels.',
-  },
-  {
-    title: 'Real-time feedback',
-    desc: 'Get hints, tests and instant feedback while you code.',
-  },
-]
-
 export default function Landing() {
   return (
     <main>
       <a className="skip-link" href="#main">Skip to content</a>
       <header className="site-header">
         <a className="brand" href="#">EnableHub</a>
-        <nav className="nav" aria-label="Primary">
-          <a href="#features">Features</a>
-          <a href="#about">About</a>
-          <a href="#contact">Contact</a>
-        </nav>
       </header>
 
       <section className="hero" role="region" aria-label="Intro">
@@ -33,19 +13,8 @@ export default function Landing() {
           <div className="hero-copy">
             <h1 className="hero-title">EnableHub — Learn together, belong together</h1>
             <p className="hero-lead">A warm, inclusive platform connecting disabled learners with contributors and mentors. Curated paths, real-time feedback, and community support.</p>
-
             <div className="ctas">
               <a className="btn btn-primary" href="#signup">Get started</a>
-              <a className="btn btn-secondary" href="#about">Learn more</a>
-            </div>
-
-            <div className="features-grid" id="features">
-              {features.map((f) => (
-                <div key={f.title} className="feature-card" role="article">
-                  <h4>{f.title}</h4>
-                  <p>{f.desc}</p>
-                </div>
-              ))}
             </div>
           </div>
 

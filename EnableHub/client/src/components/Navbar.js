@@ -1,7 +1,8 @@
 import React from 'react'
-import { NavLink } from 'react-router-dom'
+import { NavLink, useLocation } from 'react-router-dom'
 
 export default function Navbar() {
+  const location = useLocation()
   const links = [
     { to: '/', label: 'Home' },
     { to: '/cognitive', label: 'Cognitive' },
