@@ -1,20 +1,49 @@
 import React from 'react'
 
+const SAMPLE = [
+  { title: 'Voice command discoverability', quote: 'I don’t know which commands are available.' },
+  { title: 'Alternate controls', quote: 'Provide easier alternatives if voice is unreliable.' },
+]
+
 export default function Speech(){
   return (
-    <main style={{padding:24}}>
-      <h2 style={{color:'#7c2d12'}}>Speech Accessibility</h2>
-      <p>Welcome — voice control friendliness and clear prompts for non-verbal users.</p>
-      <section style={{marginTop:16}}>
-        <h3>Recent challenges</h3>
-        <ul>
-          <li>Improve voice-command discoverability</li>
-          <li>Add fallback controls for non-verbal users</li>
-        </ul>
+    <main className="page">
+      <section className="page-hero">
+        <div className="hero-text">
+          <h2 className="hero-title">🗣️ Speech Support Space</h2>
+          <p className="hero-lead">Voice-friendly controls with clear fallbacks for non-verbal interaction.</p>
+        </div>
+        <div className="page-illustration theme-speech" aria-hidden>🗣️</div>
       </section>
-      <div style={{marginTop:16}}>
-        <button className="btn btn-primary">Contribute</button>
-        <button className="btn btn-secondary" style={{marginLeft:8}}>Submit problem</button>
+
+      <div className="filters">
+        <div className="tag">💬 Communication Barrier</div>
+        <div className="tag">🔧 Needs Tech Help</div>
+      </div>
+
+      <h3>Sample problems</h3>
+      <div className="card-grid">
+        {SAMPLE.map((p) => (
+          <article className="problem-card" key={p.title}>
+            <h4>{p.title}</h4>
+            <p>“{p.quote}”</p>
+            <div className="card-actions">
+              <button className="btn btn-primary">Suggest a solution</button>
+              <button className="btn btn-secondary">Save</button>
+            </div>
+          </article>
+        ))}
+      </div>
+
+      <div className="page-cta">
+        <div>
+          <strong>Your ideas can change lives.</strong>
+          <div style={{color:'var(--muted)'}}>Share a speech-related problem or join contributors.</div>
+        </div>
+        <div style={{display:'flex', gap:8}}>
+          <button className="btn btn-secondary">Submit a problem</button>
+          <button className="btn btn-primary">Join as contributor</button>
+        </div>
       </div>
     </main>
   )

@@ -2,19 +2,43 @@ import React from 'react'
 
 export default function Hearing(){
   return (
-    <main style={{padding:24}}>
-      <h2 style={{color:'#0f766e'}}>Hearing Accessibility</h2>
-      <p>Welcome — visual transcripts, captions, and sound-free challenges.</p>
-      <section style={{marginTop:16}}>
-        <h3>Recent challenges</h3>
-        <ul>
-          <li>Captioning practice for short lectures</li>
-          <li>Silent UI: design without relying on audio cues</li>
-        </ul>
+    <main className="page">
+      <section className="page-hero">
+        <div className="hero-text">
+          <h2 className="hero-title">🦻 Hearing Support Space</h2>
+          <p className="hero-lead">Captions, better notifications, and clear alternatives for audio-first content.</p>
+        </div>
+        <div className="page-illustration theme-hearing" aria-hidden>🦻</div>
       </section>
-      <div style={{marginTop:16}}>
-        <button className="btn btn-primary">Contribute</button>
-        <button className="btn btn-secondary" style={{marginLeft:8}}>Submit problem</button>
+
+      <div className="filters">
+        <div className="tag">💬 Communication Barrier</div>
+        <div className="tag">🔧 Needs Tech Help</div>
+      </div>
+
+      <h3>Sample problems</h3>
+      <div className="card-grid">
+        {SAMPLE.map((p) => (
+          <article className="problem-card" key={p.title}>
+            <h4>{p.title}</h4>
+            <p>“{p.quote}”</p>
+            <div className="card-actions">
+              <button className="btn btn-primary">Suggest a solution</button>
+              <button className="btn btn-secondary">Save</button>
+            </div>
+          </article>
+        ))}
+      </div>
+
+      <div className="page-cta">
+        <div>
+          <strong>Your ideas can change lives.</strong>
+          <div style={{color:'var(--muted)'}}>Share an issue or start helping today.</div>
+        </div>
+        <div style={{display:'flex', gap:8}}>
+          <button className="btn btn-secondary">Submit a problem</button>
+          <button className="btn btn-primary">Join as contributor</button>
+        </div>
       </div>
     </main>
   )

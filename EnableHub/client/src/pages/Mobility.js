@@ -1,20 +1,49 @@
 import React from 'react'
 
+const SAMPLE = [
+  { title: 'Reachable actions', quote: 'Buttons are too small or too close together for assistive devices.' },
+  { title: 'Drag-and-drop fallback', quote: 'I can’t use drag-and-drop reliably; need keyboard alternatives.' },
+]
+
 export default function Mobility(){
   return (
-    <main style={{padding:24}}>
-      <h2 style={{color:'#0c4a6e'}}>Mobility Accessibility</h2>
-      <p>Welcome — keyboard-friendly interaction patterns and adaptable controls.</p>
-      <section style={{marginTop:16}}>
-        <h3>Recent challenges</h3>
-        <ul>
-          <li>Ensure all actions are reachable via keyboard</li>
-          <li>Provide alternatives for drag-and-drop</li>
-        </ul>
+    <main className="page">
+      <section className="page-hero">
+        <div className="hero-text">
+          <h2 className="hero-title">🦽 Mobility Support Space</h2>
+          <p className="hero-lead">Keyboard-first patterns, reachable controls, and alternatives to gestures.</p>
+        </div>
+        <div className="page-illustration theme-mobility" aria-hidden>🦽</div>
       </section>
-      <div style={{marginTop:16}}>
-        <button className="btn btn-primary">Contribute</button>
-        <button className="btn btn-secondary" style={{marginLeft:8}}>Submit problem</button>
+
+      <div className="filters">
+        <div className="tag">🔧 Needs Tech Help</div>
+        <div className="tag">🎨 Design Challenge</div>
+      </div>
+
+      <h3>Sample problems</h3>
+      <div className="card-grid">
+        {SAMPLE.map((p) => (
+          <article className="problem-card" key={p.title}>
+            <h4>{p.title}</h4>
+            <p>“{p.quote}”</p>
+            <div className="card-actions">
+              <button className="btn btn-primary">Suggest a solution</button>
+              <button className="btn btn-secondary">Save</button>
+            </div>
+          </article>
+        ))}
+      </div>
+
+      <div className="page-cta">
+        <div>
+          <strong>Your ideas can change lives.</strong>
+          <div style={{color:'var(--muted)'}}>Submit mobility problems or join the contributor community.</div>
+        </div>
+        <div style={{display:'flex', gap:8}}>
+          <button className="btn btn-secondary">Submit a problem</button>
+          <button className="btn btn-primary">Join as contributor</button>
+        </div>
       </div>
     </main>
   )

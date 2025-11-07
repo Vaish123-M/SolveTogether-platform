@@ -1,20 +1,49 @@
 import React from 'react'
 
+const SAMPLE = [
+  { title: 'High-contrast mode', quote: 'I need stronger contrast for text and UI elements.' },
+  { title: 'Large text scaling', quote: 'Fonts should scale without breaking layout.' },
+]
+
 export default function Visual(){
   return (
-    <main style={{padding:24}}>
-      <h2 style={{color:'#065f46'}}>Visual Accessibility</h2>
-      <p>Welcome — high-contrast themes, screen-reader-friendly tasks, and large text examples.</p>
-      <section style={{marginTop:16}}>
-        <h3>Recent challenges</h3>
-        <ul>
-          <li>Contrast testing for color choices</li>
-          <li>Large-font UI: adapt components to scale</li>
-        </ul>
+    <main className="page">
+      <section className="page-hero">
+        <div className="hero-text">
+          <h2 className="hero-title">🦯 Visual Accessibility Space</h2>
+          <p className="hero-lead">High-contrast modes, scalable fonts, and clear focus states for sight-impaired users.</p>
+        </div>
+        <div className="page-illustration theme-visual" aria-hidden>🦯</div>
       </section>
-      <div style={{marginTop:16}}>
-        <button className="btn btn-primary">Contribute</button>
-        <button className="btn btn-secondary" style={{marginLeft:8}}>Submit problem</button>
+
+      <div className="filters">
+        <div className="tag">🔧 Needs Tech Help</div>
+        <div className="tag">🧪 Prototype Ready</div>
+      </div>
+
+      <h3>Sample problems</h3>
+      <div className="card-grid">
+        {SAMPLE.map((p) => (
+          <article className="problem-card" key={p.title}>
+            <h4>{p.title}</h4>
+            <p>“{p.quote}”</p>
+            <div className="card-actions">
+              <button className="btn btn-primary">Suggest a solution</button>
+              <button className="btn btn-secondary">Save</button>
+            </div>
+          </article>
+        ))}
+      </div>
+
+      <div className="page-cta">
+        <div>
+          <strong>Your ideas can change lives.</strong>
+          <div style={{color:'var(--muted)'}}>Submit a visual accessibility issue or join contributors.</div>
+        </div>
+        <div style={{display:'flex', gap:8}}>
+          <button className="btn btn-secondary">Submit a problem</button>
+          <button className="btn btn-primary">Join as contributor</button>
+        </div>
       </div>
     </main>
   )
