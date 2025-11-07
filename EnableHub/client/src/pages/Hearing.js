@@ -1,5 +1,10 @@
 import React from 'react'
 
+const SAMPLE = [
+  { title: 'Caption sync', quote: 'Captions often lag the audio — sync them.' },
+  { title: 'Transcript export', quote: 'I want to download transcripts after sessions.' },
+]
+
 export default function Hearing(){
   return (
     <main className="page">
