@@ -4,13 +4,13 @@ import { NavLink, useLocation } from 'react-router-dom'
 export default function Navbar() {
   const location = useLocation()
   const links = [
-    { to: '/', label: 'Home' },
-    { to: '/cognitive', label: 'Cognitive' },
-    { to: '/hearing', label: 'Hearing' },
-    { to: '/visual', label: 'Visual' },
-    { to: '/mobility', label: 'Mobility' },
-    { to: '/speech', label: 'Speech' },
-    { to: '/neurodivergent', label: 'Neurodivergent' },
+    { to: '/', label: 'Home', emoji: '🏠' },
+    { to: '/cognitive', label: 'Cognitive', emoji: '🧠' },
+    { to: '/hearing', label: 'Hearing', emoji: '🦻' },
+    { to: '/visual', label: 'Visual', emoji: '🦯' },
+    { to: '/mobility', label: 'Mobility', emoji: '🦽' },
+    { to: '/speech', label: 'Speech', emoji: '🗣️' },
+    { to: '/neurodivergent', label: 'Neurodivergent', emoji: '🧩' },
   ]
 
   return (
@@ -22,8 +22,10 @@ export default function Navbar() {
             key={l.to}
             to={l.to}
             className={({isActive}) => isActive ? 'nav-link active' : 'nav-link'}
+            style={{display:'inline-flex', alignItems:'center', gap:8, padding:'6px 8px', borderRadius:8}}
           >
-            {l.label}
+            <span aria-hidden="true">{l.emoji}</span>
+            <span>{l.label}</span>
           </NavLink>
         ))}
       </div>

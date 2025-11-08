@@ -30,6 +30,31 @@ export default function Landing() {
         </div>
       </section>
 
+      {/* Role-based onboarding cards */}
+      <section id="roles" style={{padding:'20px 16px'}}>
+        <div style={{maxWidth:1100, margin:'0 auto'}}>
+          <h2 style={{margin:'6px 0'}}>Choose your role</h2>
+          <div className="card-grid">
+            <a className="problem-card" href="/onboarding/learner" aria-label="I am a disabled learner">
+              <h4>🧑‍🦽 I’m a disabled learner</h4>
+              <p>Find tailored resources, support paths, and contributors who can help.</p>
+            </a>
+            <a className="problem-card" href="/onboarding/contributor" aria-label="I am a contributor">
+              <h4>🧑‍💻 I’m a contributor</h4>
+              <p>Help solve problems, mentor, and collaborate with learners.</p>
+            </a>
+            <a className="problem-card" href="/onboarding/mentor" aria-label="I am a mentor">
+              <h4>🧑‍🏫 I’m a mentor</h4>
+              <p>Offer guidance, run workshops, and support learning journeys.</p>
+            </a>
+            <a className="problem-card" href="/onboarding/explore" aria-label="I want to explore">
+              <h4>🧑‍🎨 I want to explore</h4>
+              <p>Browse problems, learn by doing, and discover opportunities to help.</p>
+            </a>
+          </div>
+        </div>
+      </section>
+
       <section id="about" style={{padding:'28px 16px'}}>
         <div style={{maxWidth:1100, margin:'0 auto'}}>
           <h2 style={{color:'#b45309'}}>About EnableHub</h2>

@@ -9,6 +9,10 @@ import Visual from './pages/Visual'
 import Mobility from './pages/Mobility'
 import Speech from './pages/Speech'
 import Neurodivergent from './pages/Neurodivergent'
+import Learner from './pages/onboarding/Learner'
+import Contributor from './pages/onboarding/Contributor'
+import Mentor from './pages/onboarding/Mentor'
+import Explore from './pages/onboarding/Explore'
 
 export default function App() {
   return (
@@ -22,6 +26,10 @@ export default function App() {
         <Route path="/mobility" element={<Mobility />} />
         <Route path="/speech" element={<Speech />} />
         <Route path="/neurodivergent" element={<Neurodivergent />} />
+  <Route path="/onboarding/learner" element={<Learner />} />
+  <Route path="/onboarding/contributor" element={<Contributor />} />
+  <Route path="/onboarding/mentor" element={<Mentor />} />
+  <Route path="/onboarding/explore" element={<Explore />} />
       </Routes>
     </BrowserRouter>
   )
