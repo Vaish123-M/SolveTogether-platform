@@ -4,9 +4,7 @@ export default function Landing() {
   return (
     <main>
       <a className="skip-link" href="#main">Skip to content</a>
-      <header className="site-header">
-        <a className="brand" href="#">EnableHub</a>
-      </header>
+     
 
       <section className="hero" role="region" aria-label="Intro">
         <div className="hero-inner">
