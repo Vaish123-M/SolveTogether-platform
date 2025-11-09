@@ -2,6 +2,7 @@ import React from 'react'
 import './index.css'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import Navbar from './components/Navbar'
+import AccessibilityBar from './components/AccessibilityBar'
 import Landing from './pages/Landing'
 import Cognitive from './pages/Cognitive'
 import Hearing from './pages/Hearing'
@@ -17,6 +18,7 @@ import Explore from './pages/onboarding/Explore'
 export default function App() {
   return (
     <BrowserRouter>
+      <AccessibilityBar />
       <Navbar />
       <Routes>
         <Route path="/" element={<Landing />} />
