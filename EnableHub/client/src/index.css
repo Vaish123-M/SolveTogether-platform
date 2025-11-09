@@ -59,6 +59,30 @@ footer { margin-top:18px; text-align:center; color:var(--muted); font-size:13px;
 .font-controls { display:flex; gap:8px; align-items:center; }
 .font-size-display { min-width:36px; text-align:center }
 
+/* compact/accessible toggle styles */
+.accessibility-bar.compact{ display:flex; flex-direction:column; gap:8px; }
+
+/* inline style for navbar placement */
+.accessibility-bar.inline{ display:flex; align-items:center; gap:10px; padding:6px 8px; background:transparent; border-radius:8px }
+.accessibility-bar.inline .font-controls{ gap:6px }
+.accessibility-bar.inline .font-size-display{ min-width:40px; font-size:13px }
+.accessibility-bar.inline .btn{ padding:6px 8px; font-size:13px; border-radius:6px }
+
+.svg-toggle{ display:inline-block }
+
+/* keyboard focus styles for SVG toggles */
+.svg-toggle:focus-visible{ outline: 3px solid rgba(59,130,246,0.6); border-radius:8px }
+.svg-toggle:focus{ outline: none }
+
+/* Navbar accessibility button & popover */
+.nav-actions{ margin-left: auto; display:flex; align-items:center }
+.accessibility-button{ background:transparent; border:1px solid rgba(0,0,0,0.06); padding:6px 8px; border-radius:8px; cursor:pointer; font-size:16px }
+.accessibility-button:focus-visible{ outline:3px solid rgba(59,130,246,0.6) }
+.accessibility-container{ position:relative }
+.accessibility-pop{ position:absolute; right:0; top:40px; z-index:60; background:var(--card,#fff); padding:10px; border-radius:10px; box-shadow:0 6px 18px rgba(0,0,0,0.12); min-width:220px }
+
+.sr-only{ position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); border:0 }
+
 .hero { background: linear-gradient(180deg, var(--warm-1) 0%, var(--warm-2) 100%); padding:48px 16px; }
 .hero-inner { max-width:1100px; margin:0 auto; display:flex; gap:28px; align-items:center; flex-wrap:wrap; }
 .hero-copy { flex:1 1 420px; }
