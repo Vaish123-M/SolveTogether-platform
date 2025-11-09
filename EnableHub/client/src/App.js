@@ -3,6 +3,7 @@ import './index.css'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import Navbar from './components/Navbar'
 import AccessibilityBar from './components/AccessibilityBar'
+import { AccessibilityProvider } from './context/AccessibilityContext'
 import Landing from './pages/Landing'
 import Cognitive from './pages/Cognitive'
 import Hearing from './pages/Hearing'
@@ -17,9 +18,10 @@ import Explore from './pages/onboarding/Explore'
 
 export default function App() {
   return (
-    <BrowserRouter>
-      <AccessibilityBar />
-      <Navbar />
+    <AccessibilityProvider>
+      <BrowserRouter>
+        <AccessibilityBar />
+        <Navbar />
       <Routes>
         <Route path="/" element={<Landing />} />
         <Route path="/cognitive" element={<Cognitive />} />
@@ -33,6 +35,7 @@ export default function App() {
   <Route path="/onboarding/mentor" element={<Mentor />} />
   <Route path="/onboarding/explore" element={<Explore />} />
       </Routes>
-    </BrowserRouter>
+      </BrowserRouter>
+    </AccessibilityProvider>
   )
 }

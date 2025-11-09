@@ -48,6 +48,17 @@ footer { margin-top:18px; text-align:center; color:var(--muted); font-size:13px;
 
 .accessibility-bar { border-bottom: 1px solid rgba(0,0,0,0.04); }
 
+/* Toggle switch styles */
+.accessibility-bar { padding:8px 12px; }
+.accessibility-controls { display:flex; gap:12px; align-items:center; }
+.toggle-group { display:flex; gap:8px; align-items:center; }
+.toggle-switch { width:44px; height:24px; background:rgba(0,0,0,0.08); border-radius:12px; border:none; position:relative; cursor:pointer; }
+.toggle-switch .toggle-thumb { position:absolute; top:3px; left:3px; width:18px; height:18px; background:white; border-radius:50%; box-shadow:0 1px 3px rgba(0,0,0,0.2); transition:all .18s ease; }
+.toggle-switch.on { background:linear-gradient(90deg,var(--accent),var(--accent-2)); }
+.toggle-switch.on .toggle-thumb { left:23px; }
+.font-controls { display:flex; gap:8px; align-items:center; }
+.font-size-display { min-width:36px; text-align:center }
+
 .hero { background: linear-gradient(180deg, var(--warm-1) 0%, var(--warm-2) 100%); padding:48px 16px; }
 .hero-inner { max-width:1100px; margin:0 auto; display:flex; gap:28px; align-items:center; flex-wrap:wrap; }
 .hero-copy { flex:1 1 420px; }
