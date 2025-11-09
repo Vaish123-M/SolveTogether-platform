@@ -5,20 +5,6 @@ import AccessibilityBar from './AccessibilityBar'
 export default function Navbar() {
   const location = useLocation()
   
-  
-  useEffect(()=>{
-    function onDoc(e){
-      if(!accRef.current) return
-      if(!accRef.current.contains(e.target)) setShowAccessibility(false)
-    }
-    function onKey(e){ if(e.key === 'Escape') setShowAccessibility(false) }
-    document.addEventListener('click', onDoc)
-    document.addEventListener('keydown', onKey)
-    return ()=>{
-      document.removeEventListener('click', onDoc)
-      document.removeEventListener('keydown', onKey)
-    }
-  }, [accRef])
   const links = [
     { to: '/', label: 'Home', emoji: '🏠' },
     { to: '/cognitive', label: 'Cognitive', emoji: '🧠' },
