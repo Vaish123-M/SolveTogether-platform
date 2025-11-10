@@ -2,6 +2,7 @@ import React from 'react'
 import './index.css'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import Navbar from './components/Navbar'
+import AccessibilityBar from './components/AccessibilityBar'
 import { AccessibilityProvider } from './context/AccessibilityContext'
 import Landing from './pages/Landing'
 import Cognitive from './pages/Cognitive'
@@ -19,7 +20,8 @@ export default function App() {
   return (
     <AccessibilityProvider>
       <BrowserRouter>
-  <Navbar />
+        <AccessibilityBar />
+        <Navbar />
       <Routes>
         <Route path="/" element={<Landing />} />
         <Route path="/cognitive" element={<Cognitive />} />
