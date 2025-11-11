@@ -1,9 +1,12 @@
 import React from 'react'
 import { NavLink, useLocation } from 'react-router-dom'
 import AccessibilityBar from './AccessibilityBar'
+import UserSettingsPanel from './UserSettingsPanel'
+import { useState } from 'react'
 
 export default function Navbar() {
   const location = useLocation()
+  const [showSettings, setShowSettings] = useState(false)
   
   const links = [
     { to: '/', label: 'Home', emoji: '🏠' },
@@ -35,6 +38,8 @@ export default function Navbar() {
       <div className="nav-actions">
         {/* Render full accessibility controls inline in the navbar */}
         <AccessibilityBar inline={true} />
+        <button aria-label="Open user settings" title="Settings" onClick={()=>setShowSettings(true)} className="accessibility-button" style={{marginLeft:8}}>⚙️</button>
+        <UserSettingsPanel open={showSettings} onClose={()=>setShowSettings(false)} />
       </div>
     </nav>
   )
