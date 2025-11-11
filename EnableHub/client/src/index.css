@@ -177,3 +177,18 @@ body {
   .page-hero { flex-direction:column; align-items:flex-start }
   .page-illustration { width:100%; height:140px }
 }
+
+/* Focus mode: hide non-essential chrome and increase hit targets */
+.focus-mode { --base-font-size: 18px; }
+.focus-mode .nav { display: none !important; }
+.focus-mode .filters { display: none !important; }
+.focus-mode .page-cta { display: none !important; }
+.focus-mode .accessibility-bar.inline { padding:12px 10px; }
+.focus-mode .btn { padding:18px 22px; font-size:18px; border-radius:12px; }
+.focus-mode .btn-primary { padding:18px 22px; font-size:18px; }
+.focus-mode .font-controls .btn { padding:12px 14px; }
+.focus-mode .problem-card { border-radius:14px; }
+.focus-mode .hero-title { font-size:44px; }
+
+/* helper: allow developers to mark elements non-essential with .focus-hide */
+.focus-mode .focus-hide { display:none !important }

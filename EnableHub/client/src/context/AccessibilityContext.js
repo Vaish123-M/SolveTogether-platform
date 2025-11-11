@@ -7,6 +7,8 @@ const LS = {
   tts: 'eh_tts'
 }
 
+LS.focus = 'eh_focus'
+
 const ROLE_PREFIX = 'eh_settings_'
 
 
@@ -30,6 +32,7 @@ export function AccessibilityProvider({ children }){
   const [fontSize, setFontSize] = useState(readFont(LS.fontSize))
   const [tts, setTts] = useState(readBool(LS.tts, false))
   const [inputMethod, setInputMethod] = useState(readInputMethod('eh_inputMethod'))
+  const [focusMode, setFocusMode] = useState(readBool(LS.focus, false))
 
   useEffect(()=>{
     try{ localStorage.setItem(LS.dark, dark ? '1' : '0') }catch(e){}
@@ -58,6 +61,13 @@ export function AccessibilityProvider({ children }){
     try{ localStorage.setItem('eh_inputMethod', inputMethod) }catch(e){}
   },[inputMethod])
 
+  useEffect(()=>{
+    try{ localStorage.setItem(LS.focus, focusMode ? '1' : '0') }catch(e){}
+    const root = document.documentElement
+    if(focusMode) root.classList.add('focus-mode')
+    else root.classList.remove('focus-mode')
+  },[focusMode])
+
   // small helper to speak when TTS enabled
   const speak = (text) => {
     if(!tts) return
@@ -74,6 +84,7 @@ export function AccessibilityProvider({ children }){
     setFontSize('16')
     setTts(false)
     setInputMethod('keyboard')
+    setFocusMode(false)
   }
 
   // save/load a named role's preferences to localStorage (no backend available yet)
@@ -108,6 +119,7 @@ export function AccessibilityProvider({ children }){
       fontSize, setFontSize,
       tts, setTts,
       inputMethod, setInputMethod,
+      focusMode, setFocusMode,
       speak, reset,
       saveSettingsForRole, loadSettingsForRole
     }}>

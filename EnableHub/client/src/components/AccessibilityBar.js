@@ -3,7 +3,7 @@ import { useAccessibility } from '../context/AccessibilityContext'
 
 // AccessibilityBar can be rendered inline or compact (popup) when used in Navbar
 export default function AccessibilityBar({ compact = false, inline = false }){
-  const { dark, setDark, contrast, setContrast, fontSize, setFontSize, tts, setTts, speak, reset } = useAccessibility()
+  const { dark, setDark, contrast, setContrast, fontSize, setFontSize, tts, setTts, inputMethod, setInputMethod, focusMode, setFocusMode, speak, reset } = useAccessibility()
 
   const dec = ()=> setFontSize(String(Math.max(12, Number(fontSize) - 1)))
   const inc = ()=> setFontSize(String(Math.min(24, Number(fontSize) + 1)))
@@ -36,9 +36,14 @@ export default function AccessibilityBar({ compact = false, inline = false }){
         </div>
 
         <div className="toggle-group">
-             <IconToggle on={tts} onClick={()=>toggleTts(!tts)} title="Toggle text-to-speech" />
-             <span className="sr-only">Text to speech</span>
+       <IconToggle on={tts} onClick={()=>toggleTts(!tts)} title="Toggle text-to-speech" />
+       <span className="sr-only">Text to speech</span>
         </div>
+
+     <div className="toggle-group">
+       <IconToggle on={focusMode} onClick={()=>setFocusMode(!focusMode)} title="Toggle Focus Mode" />
+       <span className="sr-only">Focus mode</span>
+     </div>
 
         <div style={{marginLeft:12}}>
           <button className="btn btn-secondary" onClick={reset}>Reset preferences</button>
