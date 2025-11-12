@@ -20,8 +20,7 @@ export default function App() {
   return (
     <AccessibilityProvider>
       <BrowserRouter>
-        <AccessibilityBar />
-        <Navbar />
+  <Navbar />
       <Routes>
         <Route path="/" element={<Landing />} />
         <Route path="/cognitive" element={<Cognitive />} />
