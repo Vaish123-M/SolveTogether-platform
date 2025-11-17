@@ -10,6 +10,13 @@ const LS = {
 LS.focus = 'eh_focus'
 
 const ROLE_PREFIX = 'eh_settings_'
+const PALETTE_KEY = 'eh_palette'
+
+const PALETTES = [
+  { id: 'protanopia', label: 'Protanopia' },
+  { id: 'deuteranopia', label: 'Deuteranopia' },
+  { id: 'tritanopia', label: 'Tritanopia' }
+]
 
 
 const AccessibilityContext = createContext(null)
@@ -33,6 +40,10 @@ export function AccessibilityProvider({ children }){
   const [tts, setTts] = useState(readBool(LS.tts, false))
   const [inputMethod, setInputMethod] = useState(readInputMethod('eh_inputMethod'))
   const [focusMode, setFocusMode] = useState(readBool(LS.focus, false))
+  const [palette, setPalette] = useState(() => {
+    try{ return localStorage.getItem(PALETTE_KEY) || '' }catch(e){ return '' }
+  })
+  const [previewPalette, setPreviewPalette] = useState('')
 
   useEffect(()=>{
     try{ localStorage.setItem(LS.dark, dark ? '1' : '0') }catch(e){}
@@ -60,6 +71,20 @@ export function AccessibilityProvider({ children }){
   useEffect(()=>{
     try{ localStorage.setItem('eh_inputMethod', inputMethod) }catch(e){}
   },[inputMethod])
+
+  // apply palette or preview classes to document root. previewPalette takes precedence.
+  useEffect(()=>{
+    try{
+      const root = document.documentElement
+      // remove any existing palette classes
+      PALETTES.forEach(p => { root.classList.remove('palette-' + p.id) })
+      if(previewPalette){
+        root.classList.add('palette-' + previewPalette)
+      }else if(palette){
+        root.classList.add('palette-' + palette)
+      }
+    }catch(e){}
+  },[palette, previewPalette])
 
   useEffect(()=>{
     try{ localStorage.setItem(LS.focus, focusMode ? '1' : '0') }catch(e){}
@@ -135,6 +160,25 @@ export function AccessibilityProvider({ children }){
     try{ localStorage.removeItem(ROLE_PREFIX + role); return true }catch(e){ return false }
   }
 
+  const getAvailablePalettes = () => PALETTES.slice()
+
+  const previewPaletteFn = (id) => {
+    if(!id) return false
+    try{ setPreviewPalette(id); return true }catch(e){ return false }
+  }
+
+  const clearPreviewPalette = () => { try{ setPreviewPalette(''); return true }catch(e){ return false } }
+
+  const applyPalette = (id) => {
+    try{
+      if(!id){ localStorage.removeItem(PALETTE_KEY); setPalette(''); return true }
+      localStorage.setItem(PALETTE_KEY, id)
+      setPalette(id)
+      setPreviewPalette('')
+      return true
+    }catch(e){ return false }
+  }
+
   return (
     <AccessibilityContext.Provider value={{
       dark, setDark,
@@ -145,7 +189,8 @@ export function AccessibilityProvider({ children }){
       focusMode, setFocusMode,
       speak, reset,
       saveSettingsForRole, loadSettingsForRole,
-      listSettingsRoles, deleteSettingsForRole
+      listSettingsRoles, deleteSettingsForRole,
+      palette, applyPalette, previewPalette: previewPaletteFn, clearPreviewPalette, getAvailablePalettes
     }}>
       {children}
     </AccessibilityContext.Provider>

@@ -11,6 +11,26 @@
   --base-font-size: 16px;
 }
 
+/* Color-blindness friendly palettes (applied by adding class `palette-<id>` to <html>) */
+.palette-protanopia {
+  /* avoid red/green distinctions — use blue/orange */
+  --accent: #1f77b4; /* muted blue */
+  --accent-2: #ff7f0e; /* orange */
+  --muted: #374151;
+}
+.palette-deuteranopia {
+  /* similar to protanopia — clear blue/orange pairing */
+  --accent: #0173b2;
+  --accent-2: #fdae61;
+  --muted: #33393f;
+}
+.palette-tritanopia {
+  /* avoid blue/yellow confusion — use warm red/green */
+  --accent: #d62728; /* red */
+  --accent-2: #2ca02c; /* green */
+  --muted: #2f3136;
+}
+
 * { box-sizing: border-box; }
 html,body,#root { height:100%; margin:0; }
 body {

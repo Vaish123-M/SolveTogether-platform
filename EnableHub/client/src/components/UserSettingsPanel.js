@@ -2,10 +2,12 @@ import React, { useState, useEffect } from 'react'
 import { useAccessibility } from '../context/AccessibilityContext'
 
 export default function UserSettingsPanel({ open, onClose }){
-  const { dark, setDark, contrast, setContrast, fontSize, setFontSize, tts, setTts, inputMethod, setInputMethod, saveSettingsForRole, loadSettingsForRole, listSettingsRoles, deleteSettingsForRole } = useAccessibility()
+  const { dark, setDark, contrast, setContrast, fontSize, setFontSize, tts, setTts, inputMethod, setInputMethod, saveSettingsForRole, loadSettingsForRole, listSettingsRoles, deleteSettingsForRole, palette, applyPalette, previewPalette: previewPaletteFn, clearPreviewPalette, getAvailablePalettes } = useAccessibility()
   const [profileName, setProfileName] = useState('')
   const [savedProfiles, setSavedProfiles] = useState([])
   const [localFont, setLocalFont] = useState(String(fontSize))
+  const [availablePalettes, setAvailablePalettes] = useState([])
+  const [previewing, setPreviewing] = useState('')
 
   if(!open) return null
 
@@ -34,6 +36,10 @@ export default function UserSettingsPanel({ open, onClose }){
 
   useEffect(()=>{ refreshProfiles() }, [])
 
+  useEffect(()=>{
+    try{ setAvailablePalettes(getAvailablePalettes()) }catch(e){ setAvailablePalettes([]) }
+  }, [getAvailablePalettes])
+
   const applyProfile = (name) => {
     const ok = loadSettingsForRole(name)
     if(ok) setLocalFont(String(fontSize))
@@ -43,6 +49,22 @@ export default function UserSettingsPanel({ open, onClose }){
     if(!name) return
     deleteSettingsForRole(name)
     refreshProfiles()
+  }
+
+  const doPreviewPalette = (id) => {
+    if(!id) return
+    previewPaletteFn(id)
+    setPreviewing(id)
+  }
+
+  const doClearPreview = () => {
+    clearPreviewPalette()
+    setPreviewing('')
+  }
+
+  const doApplyPalette = (id) => {
+    applyPalette(id)
+    setPreviewing('')
   }
 
   return (
@@ -73,6 +95,26 @@ export default function UserSettingsPanel({ open, onClose }){
               </div>
             ))}
           </div>
+        </div>
+
+        <div style={{margin:'12px 0'}}>
+          <strong>Color-blindness palettes</strong>
+          <div style={{marginTop:8, display:'flex', gap:8, alignItems:'flex-start', flexWrap:'wrap'}}>
+            {availablePalettes.map(p => (
+              <div key={p.id} style={{display:'flex', flexDirection:'column', gap:6, padding:8, borderRadius:8, background:'var(--muted,#f5f5f5)'}}>
+                <div style={{fontWeight:700}}>{p.label}</div>
+                <div style={{display:'flex', gap:6}}>
+                  <button className="btn" onClick={()=>doPreviewPalette(p.id)}>Preview</button>
+                  <button className="btn btn-primary" onClick={()=>doApplyPalette(p.id)}>Apply</button>
+                </div>
+              </div>
+            ))}
+            <div style={{display:'flex', flexDirection:'column', gap:6}}>
+              <button className="btn" onClick={doClearPreview}>Stop Preview</button>
+              <button className="btn" onClick={()=>doApplyPalette('')}>Reset Palette</button>
+            </div>
+          </div>
+          <div style={{marginTop:8, fontSize:12, color:'#666'}}>Current palette: <strong>{palette || 'default'}</strong>{previewing ? ` — previewing ${previewing}` : ''}</div>
         </div>
 
         <div style={rowStyle}>
