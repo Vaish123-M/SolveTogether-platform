@@ -19,15 +19,17 @@ export default function AccessibilityBar({ compact = false, inline = false }){
   return (
     <div className={rootClass} role="region" aria-label="Accessibility settings">
       <div className="accessibility-controls">
-        <div className="toggle-group">
-             <IconToggle on={dark} onClick={()=>setDark(!dark)} title="Toggle dark mode" />
-             <span className="sr-only">Dark mode</span>
-        </div>
+             <div className="toggle-group">
+               <span className="access-icon" aria-hidden="true">🌙</span>
+               <IconToggle on={dark} onClick={()=>setDark(!dark)} title="Toggle dark mode" icon="moon" />
+               <span className="sr-only">Dark mode</span>
+             </div>
 
-        <div className="toggle-group">
-             <IconToggle on={contrast} onClick={()=>setContrast(!contrast)} title="Toggle high contrast" />
-             <span className="sr-only">High contrast</span>
-        </div>
+             <div className="toggle-group">
+               <span className="access-icon" aria-hidden="true">🌓</span>
+               <IconToggle on={contrast} onClick={()=>setContrast(!contrast)} title="Toggle high contrast" icon="contrast" />
+               <span className="sr-only">High contrast</span>
+             </div>
 
         <div className="font-controls">
           <button className="btn" aria-label="Decrease font size" onClick={dec}>-A</button>
@@ -35,13 +37,15 @@ export default function AccessibilityBar({ compact = false, inline = false }){
           <button className="btn" aria-label="Increase font size" onClick={inc}>+A</button>
         </div>
 
-        <div className="toggle-group">
-       <IconToggle on={tts} onClick={()=>toggleTts(!tts)} title="Toggle text-to-speech" />
-       <span className="sr-only">Text to speech</span>
-        </div>
+          <div className="toggle-group">
+           <span className="access-icon" aria-hidden="true">🔊</span>
+         <IconToggle on={tts} onClick={()=>toggleTts(!tts)} title="Toggle text-to-speech" icon="speaker" />
+         <span className="sr-only">Text to speech</span>
+          </div>
 
      <div className="toggle-group">
-       <IconToggle on={focusMode} onClick={()=>setFocusMode(!focusMode)} title="Toggle Focus Mode" />
+             <span className="access-icon" aria-hidden="true">🎯</span>
+       <IconToggle on={focusMode} onClick={()=>setFocusMode(!focusMode)} title="Toggle Focus Mode" icon="focus" />
        <span className="sr-only">Focus mode</span>
      </div>
 
@@ -69,8 +73,10 @@ function IconToggle({on, onClick, title}){
       className={`svg-toggle ${on ? 'on' : ''}`}
       onClick={onClick}
       onKeyDown={handleKey}
-      aria-pressed={on}
+      role="switch"
+      aria-checked={on}
       title={title}
+      data-tooltip={title}
       style={{background:'transparent',border:'none',padding:6,cursor:'pointer'}}
       tabIndex={0}
     >

@@ -104,8 +104,49 @@ a:focus-visible { outline: 3px solid rgba(245,158,11,0.14); border-radius:4px; }
 .svg-toggle{ display:inline-block }
 
 /* keyboard focus styles for SVG toggles */
+.svg-toggle{ position:relative }
 .svg-toggle:focus-visible{ outline: 3px solid rgba(59,130,246,0.6); border-radius:8px }
 .svg-toggle:focus{ outline: none }
+
+/* Simple tooltip for icons (also announced via title/aria-label) */
+.svg-toggle[data-tooltip]::after,
+.btn[data-tooltip]::after{
+  content: attr(data-tooltip);
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: calc(100% + 8px);
+  background: rgba(17,24,39,0.95);
+  color: white;
+  font-size: 12px;
+  padding: 6px 8px;
+  border-radius: 6px;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .12s ease, transform .12s ease;
+  z-index: 200;
+}
+.svg-toggle:hover::after,
+.svg-toggle:focus-visible::after,
+.btn[data-tooltip]:hover::after,
+.btn[data-tooltip]:focus-visible::after{
+  opacity: 1;
+  transform: translateX(-50%) translateY(-4px);
+}
+
+/* Focus rings for interactive elements */
+.btn:focus-visible, .accessibility-button:focus-visible, .nav-link:focus-visible, .accessibility-pop button:focus-visible {
+  outline: 3px solid rgba(99,102,241,0.22);
+  border-radius: 8px;
+}
+
+/* Highlight active/pressed elements */
+.svg-toggle.on { box-shadow: 0 0 0 4px rgba(99,102,241,0.06); }
+.btn[aria-pressed="true"], .svg-toggle[aria-pressed="true"], .svg-toggle[aria-checked="true"] { box-shadow: 0 0 0 4px rgba(99,102,241,0.06); }
+
+.access-icon{ font-size:18px; display:inline-flex; align-items:center; justify-content:center; width:22px }
+.toggle-group { display:flex; gap:8px; align-items:center }
 
 /* Navbar accessibility button & popover */
 .nav-actions{ margin-left: auto; display:flex; align-items:center }
