@@ -36,6 +36,7 @@ export default function Navbar() {
     { to: '/mobility', label: 'Mobility', emoji: '🦽' },
     { to: '/speech', label: 'Speech', emoji: '🗣️' },
     { to: '/neurodivergent', label: 'Neurodivergent', emoji: '🧩' },
+    { to: '/showcase', label: 'Showcase', emoji: '💡' },
   ]
 
   return (
