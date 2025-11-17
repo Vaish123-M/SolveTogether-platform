@@ -2,12 +2,15 @@ import React, { useState, useEffect } from 'react'
 import { useAccessibility } from '../context/AccessibilityContext'
 
 export default function UserSettingsPanel({ open, onClose }){
-  const { dark, setDark, contrast, setContrast, fontSize, setFontSize, tts, setTts, inputMethod, setInputMethod, saveSettingsForRole, loadSettingsForRole, listSettingsRoles, deleteSettingsForRole, palette, applyPalette, previewPalette: previewPaletteFn, clearPreviewPalette, getAvailablePalettes } = useAccessibility()
+  const { dark, setDark, contrast, setContrast, fontSize, setFontSize, tts, setTts, inputMethod, setInputMethod, saveSettingsForRole, loadSettingsForRole, listSettingsRoles, deleteSettingsForRole, palette, applyPalette, previewPalette: previewPaletteFn, clearPreviewPalette, getAvailablePalettes, fontFamily, setFontFamily, lineHeight, setLineHeight, letterSpacing, setLetterSpacing } = useAccessibility()
   const [profileName, setProfileName] = useState('')
   const [savedProfiles, setSavedProfiles] = useState([])
   const [localFont, setLocalFont] = useState(String(fontSize))
   const [availablePalettes, setAvailablePalettes] = useState([])
   const [previewing, setPreviewing] = useState('')
+  const [localFontFamily, setLocalFontFamily] = useState(fontFamily || '')
+  const [localLineHeight, setLocalLineHeight] = useState(String(lineHeight || '1.45'))
+  const [localLetterSpacing, setLocalLetterSpacing] = useState(String(letterSpacing || '0'))
 
   if(!open) return null
 
@@ -40,6 +43,12 @@ export default function UserSettingsPanel({ open, onClose }){
     try{ setAvailablePalettes(getAvailablePalettes()) }catch(e){ setAvailablePalettes([]) }
   }, [getAvailablePalettes])
 
+  useEffect(()=>{
+    setLocalFontFamily(fontFamily || '')
+    setLocalLineHeight(String(lineHeight || '1.45'))
+    setLocalLetterSpacing(String(letterSpacing || '0'))
+  }, [fontFamily, lineHeight, letterSpacing])
+
   const applyProfile = (name) => {
     const ok = loadSettingsForRole(name)
     if(ok) setLocalFont(String(fontSize))
@@ -65,6 +74,12 @@ export default function UserSettingsPanel({ open, onClose }){
   const doApplyPalette = (id) => {
     applyPalette(id)
     setPreviewing('')
+  }
+
+  const applyFontSettings = () => {
+    setFontFamily(localFontFamily)
+    setLineHeight(localLineHeight)
+    setLetterSpacing(localLetterSpacing)
   }
 
   return (
@@ -130,6 +145,41 @@ export default function UserSettingsPanel({ open, onClose }){
         <div style={rowStyle}>
           <label>Text-to-speech</label>
           <input type="checkbox" checked={tts} onChange={(e)=>setTts(e.target.checked)} />
+        </div>
+
+        <div style={{...rowStyle, alignItems:'flex-start'}}>
+          <label style={{marginRight:12}}>Font family</label>
+          <div style={{display:'flex', flexDirection:'column', gap:8, flex:1}}>
+            <select value={localFontFamily} onChange={(e)=>setLocalFontFamily(e.target.value)}>
+              <option value="">Default (system)</option>
+              <option value="'OpenDyslexic', Arial, sans-serif">OpenDyslexic</option>
+              <option value="'Lexend', system-ui, -apple-system, 'Segoe UI', Roboto">Lexend</option>
+              <option value="Arial, Helvetica, sans-serif">Arial</option>
+            </select>
+            <div style={{fontSize:12, color:'#666'}}>Tip: For best dyslexia support install the OpenDyslexic font or provide it via your app's CSS.</div>
+            <div style={{display:'flex', gap:8}}>
+              <button className="btn" onClick={applyFontSettings}>Apply font</button>
+              <button className="btn" onClick={()=>{ setLocalFontFamily(''); applyFontSettings(); }}>Reset to default</button>
+            </div>
+          </div>
+        </div>
+
+        <div style={rowStyle}>
+          <label>Line spacing</label>
+          <div style={{display:'flex', gap:8, alignItems:'center'}}>
+            <input type="range" min="1" max="2" step="0.05" value={localLineHeight} onChange={(e)=>setLocalLineHeight(e.target.value)} />
+            <div style={{minWidth:48, textAlign:'center'}}>{localLineHeight}</div>
+            <button className="btn" onClick={()=>{ setLineHeight(localLineHeight) }}>Apply</button>
+          </div>
+        </div>
+
+        <div style={rowStyle}>
+          <label>Letter spacing</label>
+          <div style={{display:'flex', gap:8, alignItems:'center'}}>
+            <input type="range" min="-1" max="3" step="0.1" value={localLetterSpacing} onChange={(e)=>setLocalLetterSpacing(e.target.value)} />
+            <div style={{minWidth:48, textAlign:'center'}}>{localLetterSpacing}px</div>
+            <button className="btn" onClick={()=>{ setLetterSpacing(localLetterSpacing) }}>Apply</button>
+          </div>
         </div>
 
         <div style={rowStyle}>

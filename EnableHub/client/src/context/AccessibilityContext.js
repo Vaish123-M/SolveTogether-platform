@@ -4,7 +4,10 @@ const LS = {
   dark: 'eh_dark',
   contrast: 'eh_contrast',
   fontSize: 'eh_fontSize',
-  tts: 'eh_tts'
+  tts: 'eh_tts',
+  fontFamily: 'eh_fontFamily',
+  lineHeight: 'eh_lineHeight',
+  letterSpacing: 'eh_letterSpacing'
 }
 
 LS.focus = 'eh_focus'
@@ -29,6 +32,14 @@ function readFont(key){
   try { const v = localStorage.getItem(key); return v || '16' } catch(e){ return '16' }
 }
 
+function readVar(key, def = ''){
+  try{ const v = localStorage.getItem(key); return v || def }catch(e){ return def }
+}
+
+function readNumber(key, def = 0){
+  try{ const v = localStorage.getItem(key); return v === null ? def : Number(v) }catch(e){ return def }
+}
+
 function readInputMethod(key){
   try { const v = localStorage.getItem(key); return v || 'keyboard' } catch(e){ return 'keyboard' }
 }
@@ -44,6 +55,9 @@ export function AccessibilityProvider({ children }){
     try{ return localStorage.getItem(PALETTE_KEY) || '' }catch(e){ return '' }
   })
   const [previewPalette, setPreviewPalette] = useState('')
+  const [fontFamily, setFontFamily] = useState(() => readVar(LS.fontFamily, ''))
+  const [lineHeight, setLineHeight] = useState(() => readVar(LS.lineHeight, '1.45'))
+  const [letterSpacing, setLetterSpacing] = useState(() => readVar(LS.letterSpacing, '0'))
 
   useEffect(()=>{
     try{ localStorage.setItem(LS.dark, dark ? '1' : '0') }catch(e){}
@@ -67,6 +81,21 @@ export function AccessibilityProvider({ children }){
   useEffect(()=>{
     try{ localStorage.setItem(LS.tts, tts ? '1' : '0') }catch(e){}
   },[tts])
+
+  useEffect(()=>{
+    try{ localStorage.setItem(LS.fontFamily, fontFamily || '') }catch(e){}
+    document.documentElement.style.setProperty('--body-font', fontFamily || "system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial")
+  },[fontFamily])
+
+  useEffect(()=>{
+    try{ localStorage.setItem(LS.lineHeight, String(lineHeight)) }catch(e){}
+    document.documentElement.style.setProperty('--body-line-height', String(lineHeight))
+  },[lineHeight])
+
+  useEffect(()=>{
+    try{ localStorage.setItem(LS.letterSpacing, String(letterSpacing)) }catch(e){}
+    document.documentElement.style.setProperty('--body-letter-spacing', String(letterSpacing) + 'px')
+  },[letterSpacing])
 
   useEffect(()=>{
     try{ localStorage.setItem('eh_inputMethod', inputMethod) }catch(e){}
@@ -110,13 +139,16 @@ export function AccessibilityProvider({ children }){
     setTts(false)
     setInputMethod('keyboard')
     setFocusMode(false)
+    setFontFamily('')
+    setLineHeight('1.45')
+    setLetterSpacing('0')
   }
 
   // save/load a named role's preferences to localStorage (no backend available yet)
   const saveSettingsForRole = (role) => {
     if(!role) return
     try{
-      const payload = { dark, contrast, fontSize, tts, inputMethod }
+      const payload = { dark, contrast, fontSize, tts, inputMethod, fontFamily, lineHeight, letterSpacing }
       localStorage.setItem(ROLE_PREFIX + role, JSON.stringify(payload))
       return true
     }catch(e){ return false }
@@ -133,6 +165,9 @@ export function AccessibilityProvider({ children }){
       if(p.fontSize !== undefined) setFontSize(String(p.fontSize))
       if(p.tts !== undefined) setTts(!!p.tts)
       if(p.inputMethod !== undefined) setInputMethod(p.inputMethod)
+      if(p.fontFamily !== undefined) setFontFamily(p.fontFamily)
+      if(p.lineHeight !== undefined) setLineHeight(String(p.lineHeight))
+      if(p.letterSpacing !== undefined) setLetterSpacing(String(p.letterSpacing))
       return true
     }catch(e){ return false }
   }
