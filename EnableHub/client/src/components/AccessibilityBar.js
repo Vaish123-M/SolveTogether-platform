@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useAccessibility } from '../context/AccessibilityContext'
 
 // AccessibilityBar can be rendered inline or compact (popup) when used in Navbar
@@ -49,7 +49,9 @@ export default function AccessibilityBar({ compact = false, inline = false }){
        <span className="sr-only">Focus mode</span>
      </div>
 
-        <div style={{marginLeft:12}}>
+        <div style={{marginLeft:12, display:'flex', gap:8}}>
+          <button className="btn" title="Open keyboard shortcuts guide" data-tooltip="Keyboard shortcuts (Ctrl+K)" onClick={()=>{ const e = new Event('toggleKeyboardGuide'); window.dispatchEvent(e) }}>⌨️</button>
+          <button className="btn" title="Toggle magnifier (Ctrl+M)" data-tooltip="Magnifier (Ctrl+M)" onClick={()=>{ const e = new Event('toggleMagnifier'); window.dispatchEvent(e) }}>🔍</button>
           <button className="btn btn-secondary" onClick={reset}>Reset preferences</button>
         </div>
       </div>

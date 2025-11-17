@@ -55,6 +55,8 @@ export function AccessibilityProvider({ children }){
     try{ return localStorage.getItem(PALETTE_KEY) || '' }catch(e){ return '' }
   })
   const [previewPalette, setPreviewPalette] = useState('')
+  const [magnifierEnabled, setMagnifierEnabled] = useState(false)
+  const [keyboardGuideVisible, setKeyboardGuideVisible] = useState(false)
   const [fontFamily, setFontFamily] = useState(() => readVar(LS.fontFamily, ''))
   const [lineHeight, setLineHeight] = useState(() => readVar(LS.lineHeight, '1.45'))
   const [letterSpacing, setLetterSpacing] = useState(() => readVar(LS.letterSpacing, '0'))
@@ -121,6 +123,20 @@ export function AccessibilityProvider({ children }){
     if(focusMode) root.classList.add('focus-mode')
     else root.classList.remove('focus-mode')
   },[focusMode])
+
+  // keyboard shortcuts: Ctrl+M toggles magnifier, Ctrl+K toggles keyboard guide
+  useEffect(()=>{
+    function onKey(e){
+      if(e.ctrlKey && (e.key === 'm' || e.key === 'M')){
+        e.preventDefault(); setMagnifierEnabled(v=>!v)
+      }
+      if(e.ctrlKey && (e.key === 'k' || e.key === 'K')){
+        e.preventDefault(); setKeyboardGuideVisible(v=>!v)
+      }
+    }
+    document.addEventListener('keydown', onKey)
+    return ()=> document.removeEventListener('keydown', onKey)
+  },[])
 
   // small helper to speak when TTS enabled
   const speak = (text) => {
@@ -225,7 +241,31 @@ export function AccessibilityProvider({ children }){
       speak, reset,
       saveSettingsForRole, loadSettingsForRole,
       listSettingsRoles, deleteSettingsForRole,
-      palette, applyPalette, previewPalette: previewPaletteFn, clearPreviewPalette, getAvailablePalettes
+      palette, applyPalette, previewPalette: previewPaletteFn, clearPreviewPalette, getAvailablePalettes,
+      magnifierEnabled, setMagnifierEnabled,
+      keyboardGuideVisible, setKeyboardGuideVisible,
+      performScreenReaderCheck: () => {
+        try{
+          const issues = []
+          // simple heuristics
+          if(!document.querySelector('header') && !document.querySelector('[role="banner"]')) issues.push('No header landmark')
+          if(!document.querySelector('main') && !document.querySelector('[role="main"]')) issues.push('No main landmark')
+          const imgs = Array.from(document.querySelectorAll('img'))
+          const imgsMissingAlt = imgs.filter(i=>!i.hasAttribute('alt') || i.getAttribute('alt')==='')
+          if(imgsMissingAlt.length) issues.push(`${imgsMissingAlt.length} images missing alt text`)
+          const interactive = Array.from(document.querySelectorAll('button,a,[role="button"],[tabindex]'))
+          const withoutName = interactive.filter(el=>{
+            const aria = el.getAttribute('aria-label') || el.getAttribute('aria-labelledby')
+            if(el.tagName.toLowerCase()==='a' && el.textContent.trim().length>0) return false
+            if(el.tagName.toLowerCase()==='button' && el.textContent.trim().length>0) return false
+            return !aria
+          })
+          if(withoutName.length) issues.push(`${withoutName.length} interactive elements missing accessible names`)
+          const headings = Array.from(document.querySelectorAll('h1,h2,h3,h4'))
+          if(headings.length===0) issues.push('No headings found')
+          return { ok: issues.length===0, issues }
+        }catch(e){ return { ok:false, issues:['error running check'] } }
+      }
     }}>
       {children}
     </AccessibilityContext.Provider>
