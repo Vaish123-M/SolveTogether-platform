@@ -1,15 +1,17 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useAccessibility } from '../context/AccessibilityContext'
 
 export default function UserSettingsPanel({ open, onClose }){
-  const { dark, setDark, contrast, setContrast, fontSize, setFontSize, tts, setTts, inputMethod, setInputMethod, saveSettingsForRole, loadSettingsForRole } = useAccessibility()
-  const [role, setRole] = useState('learner')
+  const { dark, setDark, contrast, setContrast, fontSize, setFontSize, tts, setTts, inputMethod, setInputMethod, saveSettingsForRole, loadSettingsForRole, listSettingsRoles, deleteSettingsForRole } = useAccessibility()
+  const [profileName, setProfileName] = useState('')
+  const [savedProfiles, setSavedProfiles] = useState([])
   const [localFont, setLocalFont] = useState(String(fontSize))
 
   if(!open) return null
 
   const applyRole = () => {
-    const ok = loadSettingsForRole(role)
+    if(!profileName) return
+    const ok = loadSettingsForRole(profileName)
     if(!ok){
       // nothing saved for role
       // optionally inform user — keep UI minimal, just close
@@ -21,7 +23,26 @@ export default function UserSettingsPanel({ open, onClose }){
   const saveForRole = () => {
     // ensure font value applied
     setFontSize(String(localFont))
-    saveSettingsForRole(role)
+    if(!profileName) return
+    saveSettingsForRole(profileName)
+    refreshProfiles()
+  }
+
+  const refreshProfiles = () => {
+    try{ setSavedProfiles(listSettingsRoles()) }catch(e){ setSavedProfiles([]) }
+  }
+
+  useEffect(()=>{ refreshProfiles() }, [])
+
+  const applyProfile = (name) => {
+    const ok = loadSettingsForRole(name)
+    if(ok) setLocalFont(String(fontSize))
+  }
+
+  const deleteProfile = (name) => {
+    if(!name) return
+    deleteSettingsForRole(name)
+    refreshProfiles()
   }
 
   return (
@@ -30,13 +51,29 @@ export default function UserSettingsPanel({ open, onClose }){
         <h3 style={{marginTop:0}}>User settings</h3>
 
         <label style={rowStyle}>
-          Role
-          <select value={role} onChange={(e)=>setRole(e.target.value)} style={{marginLeft:8}}>
-            <option value="learner">Learner</option>
-            <option value="mentor">Mentor</option>
-            <option value="contributor">Contributor</option>
-          </select>
+          Profile name
+          <input placeholder="e.g. Dyslexia, Low Vision" value={profileName} onChange={(e)=>setProfileName(e.target.value)} style={{marginLeft:8, flex:1}} />
         </label>
+
+        <div style={{margin:'8px 0'}}>
+          <strong>Saved profiles</strong>
+          <div style={{marginTop:8, display:'flex', flexDirection:'column', gap:8, maxHeight:160, overflow:'auto'}}>
+            {savedProfiles.length===0 && <div style={{color:'#666'}}>No profiles saved yet.</div>}
+            {savedProfiles.map(p => (
+              <div key={p.name} style={{display:'flex', alignItems:'center', justifyContent:'space-between', gap:8, padding:8, borderRadius:6, background:'var(--muted,#f5f5f5)'}}>
+                <div style={{flex:1}}>
+                  <div style={{fontWeight:600}}>{p.name}</div>
+                  <div style={{fontSize:12, color:'#444'}}>{p.payload ? `font ${p.payload.fontSize}px · ${p.payload.contrast? 'contrast':''} ${p.payload.tts? '· tts':''}` : 'no preview'}</div>
+                </div>
+                <div style={{display:'flex', gap:6}}>
+                  <button className="btn" onClick={()=>applyProfile(p.name)}>Apply</button>
+                  <button className="btn" onClick={()=>{ setProfileName(p.name); }}>Select</button>
+                  <button className="btn" onClick={()=>deleteProfile(p.name)}>Delete</button>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
 
         <div style={rowStyle}>
           <label>High contrast</label>

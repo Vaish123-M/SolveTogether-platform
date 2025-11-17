@@ -112,6 +112,29 @@ export function AccessibilityProvider({ children }){
     }catch(e){ return false }
   }
 
+  const listSettingsRoles = () => {
+    try{
+      const out = []
+      for(let i=0;i<localStorage.length;i++){
+        const key = localStorage.key(i)
+        if(!key) continue
+        if(key.startsWith(ROLE_PREFIX)){
+          const name = key.slice(ROLE_PREFIX.length)
+          try{
+            const payload = JSON.parse(localStorage.getItem(key))
+            out.push({ name, payload })
+          }catch(e){ out.push({ name, payload: null }) }
+        }
+      }
+      return out
+    }catch(e){ return [] }
+  }
+
+  const deleteSettingsForRole = (role) => {
+    if(!role) return false
+    try{ localStorage.removeItem(ROLE_PREFIX + role); return true }catch(e){ return false }
+  }
+
   return (
     <AccessibilityContext.Provider value={{
       dark, setDark,
@@ -121,7 +144,8 @@ export function AccessibilityProvider({ children }){
       inputMethod, setInputMethod,
       focusMode, setFocusMode,
       speak, reset,
-      saveSettingsForRole, loadSettingsForRole
+      saveSettingsForRole, loadSettingsForRole,
+      listSettingsRoles, deleteSettingsForRole
     }}>
       {children}
     </AccessibilityContext.Provider>
