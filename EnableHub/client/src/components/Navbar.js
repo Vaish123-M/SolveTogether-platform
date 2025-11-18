@@ -40,21 +40,34 @@ export default function Navbar() {
   ]
 
   return (
-    <nav className="site-header" aria-label="Main navigation">
-      <a className="brand" href="/">EnableHub</a>
-      <div className="nav">
-        {links.map((l) => (
-          <NavLink
-            key={l.to}
-            to={l.to}
-            className={({isActive}) => isActive ? 'nav-link active' : 'nav-link'}
-            style={{display:'inline-flex', alignItems:'center', gap:8, padding:'6px 8px', borderRadius:8}}
-          >
-            <span aria-hidden="true">{l.emoji}</span>
-            <span>{l.label}</span>
-          </NavLink>
-        ))}
-      </div>
+    <header className="site-header" role="banner">
+      <a className="skip-link" href="#main">Skip to main content</a>
+      <a className="brand" href="/" aria-label="EnableHub home">EnableHub</a>
+      <nav className="nav" aria-label="Main navigation">
+        {links.map((l) => {
+          const labelId = `nav-${l.label.toLowerCase().replace(/\s+/g,'-')}-label`
+          return (
+            <NavLink
+              key={l.to}
+              to={l.to}
+              className={({isActive}) => isActive ? 'nav-link active' : 'nav-link'}
+              aria-labelledby={labelId}
+              style={{display:'inline-flex', alignItems:'center', gap:8, padding:'6px 8px', borderRadius:8}}
+              end
+            >
+              {({isActive}) => (
+                <>
+                  <span id={labelId} style={{display:'inline-flex', alignItems:'center', gap:8}}>
+                    <span aria-hidden="true">{l.emoji}</span>
+                    <span>{l.label}</span>
+                  </span>
+                  <span aria-current={isActive ? 'page' : undefined} style={{display:'none'}} />
+                </>
+              )}
+            </NavLink>
+          )
+        })}
+      </nav>
 
       <div className="nav-actions">
         {/* Render full accessibility controls inline in the navbar */}
@@ -65,6 +78,6 @@ export default function Navbar() {
         <ScreenReaderCheck />
         <KeyboardGuide />
       </div>
-    </nav>
+    </header>
   )
 }

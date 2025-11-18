@@ -20,9 +20,10 @@ import Explore from './pages/onboarding/Explore'
 export default function App() {
   return (
     <AccessibilityProvider>
-      <BrowserRouter>
-  <Navbar />
-      <Routes>
+        <BrowserRouter>
+      <Navbar />
+        <main id="main" role="main">
+        <Routes>
         <Route path="/" element={<Landing />} />
         <Route path="/cognitive" element={<Cognitive />} />
         <Route path="/hearing" element={<Hearing />} />
@@ -36,6 +37,7 @@ export default function App() {
   <Route path="/onboarding/mentor" element={<Mentor />} />
   <Route path="/onboarding/explore" element={<Explore />} />
       </Routes>
+      </main>
       </BrowserRouter>
     </AccessibilityProvider>
   )
