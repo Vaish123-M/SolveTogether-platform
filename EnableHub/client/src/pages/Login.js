@@ -23,8 +23,9 @@ export default function Login(){
 
     // set session (do not keep password in session)
     try{ localStorage.setItem('eh_user', JSON.stringify({ email: found.email, username: found.username, role: found.role })) }catch(e){}
-    // redirect learners to their dashboard, others to home
+    // redirect by role
     if(found.role === 'learner') navigate('/learner')
+    else if(found.role === 'contributor') navigate('/contributor')
     else navigate('/')
   }
 
