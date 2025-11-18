@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 
 const SAMPLE = [
   { title: 'Simplify onboarding', quote: 'I forget steps in the signup flow — make it simpler.' },
@@ -43,8 +44,8 @@ export default function Cognitive(){
           <div style={{color:'var(--muted)'}}>Start by submitting a problem or join as a contributor.</div>
         </div>
         <div style={{display:'flex', gap:8}}>
-          <button className="btn btn-secondary">Submit a problem</button>
-          <button className="btn btn-primary">Join as contributor</button>
+          <Link to="/submit" className="btn btn-secondary">Submit a problem</Link>
+          <Link to="/contribute" className="btn btn-primary">Join as contributor</Link>
         </div>
       </div>
     </main>

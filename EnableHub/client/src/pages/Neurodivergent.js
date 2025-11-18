@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 
 const SAMPLE = [
   { title: 'Reduced motion mode', quote: 'Animations make me uncomfortable — provide a calm mode.' },
@@ -41,8 +42,8 @@ export default function Neurodivergent(){
           <div style={{color:'var(--muted)'}}>Share a neurodivergent-friendly problem or join contributors.</div>
         </div>
         <div style={{display:'flex', gap:8}}>
-          <button className="btn btn-secondary">Submit a problem</button>
-          <button className="btn btn-primary">Join as contributor</button>
+          <Link to="/submit" className="btn btn-secondary">Submit a problem</Link>
+          <Link to="/contribute" className="btn btn-primary">Join as contributor</Link>
         </div>
       </div>
     </main>

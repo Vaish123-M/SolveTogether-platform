@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 
 const SAMPLE = [
   { title: 'Reachable actions', quote: 'Buttons are too small or too close together for assistive devices.' },
@@ -41,8 +42,8 @@ export default function Mobility(){
           <div style={{color:'var(--muted)'}}>Submit mobility problems or join the contributor community.</div>
         </div>
         <div style={{display:'flex', gap:8}}>
-          <button className="btn btn-secondary">Submit a problem</button>
-          <button className="btn btn-primary">Join as contributor</button>
+          <Link to="/submit" className="btn btn-secondary">Submit a problem</Link>
+          <Link to="/contribute" className="btn btn-primary">Join as contributor</Link>
         </div>
       </div>
     </main>

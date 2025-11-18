@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 
 const SAMPLE = [
   { title: 'Caption sync', quote: 'Captions often lag the audio — sync them.' },
@@ -41,8 +42,8 @@ export default function Hearing(){
           <div style={{color:'var(--muted)'}}>Share an issue or start helping today.</div>
         </div>
         <div style={{display:'flex', gap:8}}>
-          <button className="btn btn-secondary">Submit a problem</button>
-          <button className="btn btn-primary">Join as contributor</button>
+          <Link to="/submit" className="btn btn-secondary">Submit a problem</Link>
+          <Link to="/contribute" className="btn btn-primary">Join as contributor</Link>
         </div>
       </div>
     </main>

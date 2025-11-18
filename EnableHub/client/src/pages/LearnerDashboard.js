@@ -27,6 +27,9 @@ export default function LearnerDashboard(){
         <div className="hero-text">
           <h2 className="hero-title">👩‍🎓 Welcome back, {user.username} — here’s your learning path.</h2>
           <p className="hero-lead">Quick access to tailored resources, upcoming sessions, and suggested helpers.</p>
+          <div style={{marginTop:12}}>
+            <Link to="/submit" className="btn btn-primary">Submit a problem</Link>
+          </div>
         </div>
       </section>
 

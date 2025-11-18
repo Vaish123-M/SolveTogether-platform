@@ -21,6 +21,9 @@ import Explore from './pages/onboarding/Explore'
 import LearnerDashboard from './pages/LearnerDashboard'
 import ContributorDashboard from './pages/ContributorDashboard'
 import AdminDashboard from './pages/AdminDashboard'
+import SubmitProblem from './pages/SubmitProblem'
+import SubmitLanding from './pages/SubmitLanding'
+import ContributorLanding from './pages/ContributorLanding'
 import ProtectedRoute from './components/ProtectedRoute'
 
 export default function App() {
@@ -45,6 +48,9 @@ export default function App() {
               <LearnerDashboard />
             </ProtectedRoute>
           } />
+          <Route path="/submit" element={<SubmitLanding />} />
+          <Route path="/submit-problem" element={<ProtectedRoute allowedRoles={["learner"]}><SubmitProblem /></ProtectedRoute>} />
+          <Route path="/contribute" element={<ContributorLanding />} />
           <Route path="/contributor" element={
             <ProtectedRoute allowedRoles={["contributor"]}>
               <ContributorDashboard />
