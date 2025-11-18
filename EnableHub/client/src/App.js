@@ -18,6 +18,7 @@ import Learner from './pages/onboarding/Learner'
 import Contributor from './pages/onboarding/Contributor'
 import Mentor from './pages/onboarding/Mentor'
 import Explore from './pages/onboarding/Explore'
+import LearnerDashboard from './pages/LearnerDashboard'
 
 export default function App() {
   return (
@@ -36,6 +37,7 @@ export default function App() {
         <Route path="/showcase" element={<Showcase />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
+          <Route path="/learner" element={<LearnerDashboard />} />
   <Route path="/onboarding/learner" element={<Learner />} />
   <Route path="/onboarding/contributor" element={<Contributor />} />
   <Route path="/onboarding/mentor" element={<Mentor />} />

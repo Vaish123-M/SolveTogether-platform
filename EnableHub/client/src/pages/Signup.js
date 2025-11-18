@@ -33,7 +33,9 @@ export default function Signup(){
 
     // set current session (do not store password in session object)
     try{ localStorage.setItem('eh_user', JSON.stringify({ email, username, role })) }catch(e){}
-    navigate('/')
+    // if learner, send to learner dashboard
+    if(role === 'learner') navigate('/learner')
+    else navigate('/')
   }
 
   return (
