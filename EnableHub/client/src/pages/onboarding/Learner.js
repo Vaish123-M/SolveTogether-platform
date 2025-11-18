@@ -30,7 +30,7 @@ export default function Learner(){
         </div>
 
         <div style={{display:'flex', gap:8, marginTop:16}}>
-          <button className="btn btn-primary">Let’s get started — set goals 🎯</button>
+          <button className="btn btn-primary" onClick={()=>window.location.href='/login'}>Let’s get started — set goals 🎯</button>
           <button className="btn btn-secondary">I’ll explore first 👀</button>
         </div>
 

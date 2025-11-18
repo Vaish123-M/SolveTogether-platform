@@ -6,14 +6,29 @@ import Magnifier from './Magnifier'
 import ScreenReaderCheck from './ScreenReaderCheck'
 import KeyboardGuide from './KeyboardGuide'
 import { HomeIcon, BrainIcon, EarIcon, EyeIcon, WheelchairIcon, SpeechIcon, PuzzleIcon, LightbulbIcon } from './icons'
-import { useState } from 'react'
-import { useEffect } from 'react'
+import { useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { useAccessibility } from '../context/AccessibilityContext'
 
 export default function Navbar() {
   const location = useLocation()
   const [showSettings, setShowSettings] = useState(false)
   const { setMagnifierEnabled, setKeyboardGuideVisible } = useAccessibility()
+  const [user, setUser] = useState(null)
+  const navigate = useNavigate()
+
+  useEffect(()=>{
+    try{
+      const raw = localStorage.getItem('eh_user')
+      if(raw) setUser(JSON.parse(raw))
+    }catch(e){ setUser(null) }
+  },[])
+
+  const doLogout = ()=>{
+    try{ localStorage.removeItem('eh_user') }catch(e){}
+    setUser(null)
+    navigate('/')
+  }
 
   useEffect(()=>{
     function onToggleMagnifier(){ setMagnifierEnabled(v=>!v) }
@@ -76,6 +91,20 @@ export default function Navbar() {
         <Magnifier />
         <ScreenReaderCheck />
         <KeyboardGuide />
+        <div style={{marginLeft:12, display:'flex', gap:8, alignItems:'center'}}>
+          {!user && (
+            <>
+              <button className="btn" onClick={()=>navigate('/login')}>Sign in</button>
+              <button className="btn btn-primary" onClick={()=>navigate('/signup')}>Sign up</button>
+            </>
+          )}
+          {user && (
+            <>
+              <div style={{fontSize:14, fontWeight:600}}>{user.username}</div>
+              <button className="btn" onClick={doLogout}>Logout</button>
+            </>
+          )}
+        </div>
       </div>
     </header>
   )

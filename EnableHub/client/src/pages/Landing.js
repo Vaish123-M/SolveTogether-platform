@@ -12,7 +12,7 @@ export default function Landing() {
             <h1 className="hero-title">EnableHub — Learn together, belong together</h1>
             <p className="hero-lead">A warm, inclusive platform connecting disabled learners with contributors and mentors. Curated paths, real-time feedback, and community support.</p>
             <div className="ctas">
-              <a className="btn btn-primary" href="#signup">Get started</a>
+              <a className="btn btn-primary" href="/login">Get started</a>
             </div>
           </div>
 

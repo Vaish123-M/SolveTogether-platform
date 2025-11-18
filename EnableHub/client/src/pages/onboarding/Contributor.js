@@ -30,7 +30,7 @@ export default function Contributor(){
         </div>
 
         <div style={{display:'flex', gap:8, marginTop:16}}>
-          <button className="btn btn-primary">Create profile ✨</button>
+          <button className="btn btn-primary" onClick={()=>window.location.href='/login'}>Create profile ✨</button>
           <button className="btn btn-secondary">Browse problems 🔎</button>
         </div>
 

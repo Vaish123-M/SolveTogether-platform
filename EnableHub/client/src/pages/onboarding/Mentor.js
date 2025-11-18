@@ -30,7 +30,7 @@ export default function Mentor(){
         </div>
 
         <div style={{display:'flex', gap:8, marginTop:16}}>
-          <button className="btn btn-primary">Create workshop ✍️</button>
+          <button className="btn btn-primary" onClick={()=>window.location.href='/login'}>Create workshop ✍️</button>
           <button className="btn btn-secondary">Find mentees 🤝</button>
         </div>
 

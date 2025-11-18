@@ -12,6 +12,8 @@ import Mobility from './pages/Mobility'
 import Speech from './pages/Speech'
 import Neurodivergent from './pages/Neurodivergent'
 import Showcase from './pages/Showcase'
+import Login from './pages/Login'
+import Signup from './pages/Signup'
 import Learner from './pages/onboarding/Learner'
 import Contributor from './pages/onboarding/Contributor'
 import Mentor from './pages/onboarding/Mentor'
@@ -32,6 +34,8 @@ export default function App() {
         <Route path="/speech" element={<Speech />} />
         <Route path="/neurodivergent" element={<Neurodivergent />} />
         <Route path="/showcase" element={<Showcase />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<Signup />} />
   <Route path="/onboarding/learner" element={<Learner />} />
   <Route path="/onboarding/contributor" element={<Contributor />} />
   <Route path="/onboarding/mentor" element={<Mentor />} />
