@@ -20,6 +20,7 @@ import Mentor from './pages/onboarding/Mentor'
 import Explore from './pages/onboarding/Explore'
 import LearnerDashboard from './pages/LearnerDashboard'
 import ContributorDashboard from './pages/ContributorDashboard'
+import AdminDashboard from './pages/AdminDashboard'
 
 export default function App() {
   return (
@@ -40,6 +41,7 @@ export default function App() {
         <Route path="/signup" element={<Signup />} />
           <Route path="/learner" element={<LearnerDashboard />} />
         <Route path="/contributor" element={<ContributorDashboard />} />
+        <Route path="/admin" element={<AdminDashboard />} />
   <Route path="/onboarding/learner" element={<Learner />} />
   <Route path="/onboarding/contributor" element={<Contributor />} />
   <Route path="/onboarding/mentor" element={<Mentor />} />

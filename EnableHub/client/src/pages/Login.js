@@ -26,6 +26,7 @@ export default function Login(){
     // redirect by role
     if(found.role === 'learner') navigate('/learner')
     else if(found.role === 'contributor') navigate('/contributor')
+    else if(found.role === 'admin') navigate('/admin')
     else navigate('/')
   }
 

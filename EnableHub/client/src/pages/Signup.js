@@ -36,6 +36,7 @@ export default function Signup(){
     // redirect by role
     if(role === 'learner') navigate('/learner')
     else if(role === 'contributor') navigate('/contributor')
+    else if(role === 'admin') navigate('/admin')
     else navigate('/')
   }
 
