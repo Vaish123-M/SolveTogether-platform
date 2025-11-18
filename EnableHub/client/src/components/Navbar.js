@@ -5,6 +5,7 @@ import UserSettingsPanel from './UserSettingsPanel'
 import Magnifier from './Magnifier'
 import ScreenReaderCheck from './ScreenReaderCheck'
 import KeyboardGuide from './KeyboardGuide'
+import { HomeIcon, BrainIcon, EarIcon, EyeIcon, WheelchairIcon, SpeechIcon, PuzzleIcon, LightbulbIcon } from './icons'
 import { useState } from 'react'
 import { useEffect } from 'react'
 import { useAccessibility } from '../context/AccessibilityContext'
@@ -29,14 +30,14 @@ export default function Navbar() {
   },[setMagnifierEnabled, setKeyboardGuideVisible])
   
   const links = [
-    { to: '/', label: 'Home', emoji: '🏠' },
-    { to: '/cognitive', label: 'Cognitive', emoji: '🧠' },
-    { to: '/hearing', label: 'Hearing', emoji: '🦻' },
-    { to: '/visual', label: 'Visual', emoji: '🦯' },
-    { to: '/mobility', label: 'Mobility', emoji: '🦽' },
-    { to: '/speech', label: 'Speech', emoji: '🗣️' },
-    { to: '/neurodivergent', label: 'Neurodivergent', emoji: '🧩' },
-    { to: '/showcase', label: 'Showcase', emoji: '💡' },
+    { to: '/', label: 'Home', icon: <HomeIcon size={24} /> },
+    { to: '/cognitive', label: 'Cognitive', icon: <BrainIcon size={24} /> },
+    { to: '/hearing', label: 'Hearing', icon: <EarIcon size={24} /> },
+    { to: '/visual', label: 'Visual', icon: <EyeIcon size={24} /> },
+    { to: '/mobility', label: 'Mobility', icon: <WheelchairIcon size={24} /> },
+    { to: '/speech', label: 'Speech', icon: <SpeechIcon size={24} /> },
+    { to: '/neurodivergent', label: 'Neurodivergent', icon: <PuzzleIcon size={24} /> },
+    { to: '/showcase', label: 'Showcase', icon: <LightbulbIcon size={24} /> },
   ]
 
   return (
@@ -56,14 +57,12 @@ export default function Navbar() {
               end
             >
               {({isActive}) => (
-                <>
-                  <span id={labelId} style={{display:'inline-flex', alignItems:'center', gap:8}}>
-                    <span aria-hidden="true">{l.emoji}</span>
-                    <span>{l.label}</span>
-                  </span>
-                  <span aria-current={isActive ? 'page' : undefined} style={{display:'none'}} />
-                </>
-              )}
+                  <>
+                    <span aria-hidden="true" style={{display:'inline-flex', alignItems:'center', gap:8}}>{l.icon}</span>
+                    <span id={labelId} className="nav-label">{l.label}</span>
+                    <span aria-current={isActive ? 'page' : undefined} style={{display:'none'}} />
+                  </>
+                )}
             </NavLink>
           )
         })}

@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react'
 import { useAccessibility } from '../context/AccessibilityContext'
+import { MoonIcon, ContrastIcon, SpeakerIcon, TargetIcon } from './icons'
 
 // AccessibilityBar can be rendered inline or compact (popup) when used in Navbar
 export default function AccessibilityBar({ compact = false, inline = false }){
@@ -19,17 +20,17 @@ export default function AccessibilityBar({ compact = false, inline = false }){
   return (
     <div className={rootClass} role="region" aria-label="Accessibility settings">
       <div className="accessibility-controls">
-             <div className="toggle-group">
-               <span className="access-icon" aria-hidden="true">🌙</span>
-               <IconToggle on={dark} onClick={()=>setDark(!dark)} title="Toggle dark mode" icon="moon" />
-               <span className="sr-only">Dark mode</span>
-             </div>
+               <div className="toggle-group">
+                 <span className="access-icon" aria-hidden="true"><MoonIcon size={20} /></span>
+                 <IconToggle on={dark} onClick={()=>setDark(!dark)} title="Toggle dark mode" icon="moon" />
+                 <span className="sr-only">Dark mode</span>
+               </div>
 
-             <div className="toggle-group">
-               <span className="access-icon" aria-hidden="true">🌓</span>
-               <IconToggle on={contrast} onClick={()=>setContrast(!contrast)} title="Toggle high contrast" icon="contrast" />
-               <span className="sr-only">High contrast</span>
-             </div>
+               <div className="toggle-group">
+                 <span className="access-icon" aria-hidden="true"><ContrastIcon size={20} /></span>
+                 <IconToggle on={contrast} onClick={()=>setContrast(!contrast)} title="Toggle high contrast" icon="contrast" />
+                 <span className="sr-only">High contrast</span>
+               </div>
 
         <div className="font-controls">
           <button className="btn" aria-label="Decrease font size" onClick={dec}>-A</button>
@@ -37,14 +38,14 @@ export default function AccessibilityBar({ compact = false, inline = false }){
           <button className="btn" aria-label="Increase font size" onClick={inc}>+A</button>
         </div>
 
-          <div className="toggle-group">
-           <span className="access-icon" aria-hidden="true">🔊</span>
-         <IconToggle on={tts} onClick={()=>toggleTts(!tts)} title="Toggle text-to-speech" icon="speaker" />
-         <span className="sr-only">Text to speech</span>
-          </div>
+            <div className="toggle-group">
+             <span className="access-icon" aria-hidden="true"><SpeakerIcon size={20} /></span>
+           <IconToggle on={tts} onClick={()=>toggleTts(!tts)} title="Toggle text-to-speech" icon="speaker" />
+           <span className="sr-only">Text to speech</span>
+            </div>
 
      <div className="toggle-group">
-             <span className="access-icon" aria-hidden="true">🎯</span>
+             <span className="access-icon" aria-hidden="true"><TargetIcon size={20} /></span>
        <IconToggle on={focusMode} onClick={()=>setFocusMode(!focusMode)} title="Toggle Focus Mode" icon="focus" />
        <span className="sr-only">Focus mode</span>
      </div>
