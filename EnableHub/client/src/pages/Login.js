@@ -23,6 +23,8 @@ export default function Login(){
 
     // set session (do not keep password in session)
     try{ localStorage.setItem('eh_user', JSON.stringify({ email: found.email, username: found.username, role: found.role })) }catch(e){}
+    // notify others
+    try{ window.dispatchEvent(new Event('authChanged')) }catch(e){}
     // redirect by role
     if(found.role === 'learner') navigate('/learner')
     else if(found.role === 'contributor') navigate('/contributor')

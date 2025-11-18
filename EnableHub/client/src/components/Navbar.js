@@ -16,17 +16,34 @@ export default function Navbar() {
   const { setMagnifierEnabled, setKeyboardGuideVisible } = useAccessibility()
   const [user, setUser] = useState(null)
   const navigate = useNavigate()
-
   useEffect(()=>{
-    try{
-      const raw = localStorage.getItem('eh_user')
-      if(raw) setUser(JSON.parse(raw))
-    }catch(e){ setUser(null) }
+    function readUser(){
+      try{
+        const raw = localStorage.getItem('eh_user')
+        if(raw) setUser(JSON.parse(raw))
+        else setUser(null)
+      }catch(e){ setUser(null) }
+    }
+
+    // initial read
+    readUser()
+
+    // listen for changes from other tabs or explicit auth events
+    function onStorage(e){ if(e.key === 'eh_user') readUser() }
+    function onAuth(){ readUser() }
+    window.addEventListener('storage', onStorage)
+    window.addEventListener('authChanged', onAuth)
+    return ()=>{
+      window.removeEventListener('storage', onStorage)
+      window.removeEventListener('authChanged', onAuth)
+    }
   },[])
 
   const doLogout = ()=>{
     try{ localStorage.removeItem('eh_user') }catch(e){}
     setUser(null)
+    // notify other tabs/components
+    try{ window.dispatchEvent(new Event('authChanged')) }catch(e){}
     navigate('/')
   }
 
@@ -99,10 +116,17 @@ export default function Navbar() {
             </>
           )}
           {user && (
-            <>
-              <div style={{fontSize:14, fontWeight:600}}>{user.username}</div>
-              <button className="btn" onClick={doLogout}>Logout</button>
-            </>
+            <div style={{display:'flex', gap:8, alignItems:'center'}}>
+              <div aria-hidden style={{width:36, height:36, borderRadius:18, background:'#eef', display:'inline-flex', alignItems:'center', justifyContent:'center', fontWeight:700}}>{(user.username||user.email||'U').charAt(0).toUpperCase()}</div>
+              <div style={{display:'flex', flexDirection:'column', alignItems:'flex-start'}}>
+                <div style={{fontSize:14, fontWeight:600}}>{user.username || user.email}</div>
+                <div style={{fontSize:12, color:'#666'}}>{user.role}</div>
+              </div>
+              <div style={{display:'flex', gap:8, marginLeft:8}}>
+                <button className="btn" aria-label="View profile" title="Profile" onClick={()=>navigate('/profile')}>Profile</button>
+                <button className="btn" aria-label="Logout" title="Sign out" onClick={doLogout}>Sign out</button>
+              </div>
+            </div>
           )}
         </div>
       </div>

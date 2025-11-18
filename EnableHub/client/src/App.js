@@ -21,6 +21,7 @@ import Explore from './pages/onboarding/Explore'
 import LearnerDashboard from './pages/LearnerDashboard'
 import ContributorDashboard from './pages/ContributorDashboard'
 import AdminDashboard from './pages/AdminDashboard'
+import ProtectedRoute from './components/ProtectedRoute'
 
 export default function App() {
   return (
@@ -39,9 +40,21 @@ export default function App() {
         <Route path="/showcase" element={<Showcase />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
-          <Route path="/learner" element={<LearnerDashboard />} />
-        <Route path="/contributor" element={<ContributorDashboard />} />
-        <Route path="/admin" element={<AdminDashboard />} />
+          <Route path="/learner" element={
+            <ProtectedRoute allowedRoles={["learner"]}>
+              <LearnerDashboard />
+            </ProtectedRoute>
+          } />
+          <Route path="/contributor" element={
+            <ProtectedRoute allowedRoles={["contributor"]}>
+              <ContributorDashboard />
+            </ProtectedRoute>
+          } />
+          <Route path="/admin" element={
+            <ProtectedRoute allowedRoles={["admin"]}>
+              <AdminDashboard />
+            </ProtectedRoute>
+          } />
   <Route path="/onboarding/learner" element={<Learner />} />
   <Route path="/onboarding/contributor" element={<Contributor />} />
   <Route path="/onboarding/mentor" element={<Mentor />} />
