@@ -1,0 +1,24 @@
+{
+  "framework": "create-react-app",
+  "buildCommand": "npm run build",
+  "outputDirectory": "client/build",
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
+  ]
+}{
+  "buildCommand": "cd client && npm install && npm run build",
+  "outputDirectory": "client/build",
+  "routes": [
+    {
+      "src": "^/static/(.*)",
+      "dest": "/static/$1"
+    },
+    {
+      "src": ".*",
+      "dest": "/index.html"
+    }
+  ]
+}

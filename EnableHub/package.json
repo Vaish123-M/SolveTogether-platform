@@ -1,0 +1,10 @@
+{
+  "name": "enablehub-root",
+  "private": true,
+  "workspaces": [
+    "client"
+  ],
+  "scripts": {
+    "build": "npm run build -w client"
+  }
+}
