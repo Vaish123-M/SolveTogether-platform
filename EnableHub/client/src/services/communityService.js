@@ -66,6 +66,13 @@ export function addRating(id, score){
   return true
 }
 
+export function averageRating(item){
+  const ratings = item && Array.isArray(item.ratings) ? item.ratings : []
+  if(ratings.length === 0) return 0
+  const total = ratings.reduce((sum, r)=>sum + (Number(r.score) || 0), 0)
+  return (total / ratings.length).toFixed(1)
+}
+
 export function addFeedback(id, author, text){
   const items = readAll()
   const it = items.find(i=>i.id===id)
@@ -158,4 +165,4 @@ export function clearAll(){
   try{ localStorage.removeItem(LS_KEY); return true }catch(e){ return false }
 }
 
-export default { addSubmission, listSubmissions, getSubmissionById, addRating, addFeedback, addSolution, addComment, voteSolution, markHelpful, awardBadge, getBadges, clearAll }
+export default { addSubmission, listSubmissions, getSubmissionById, addRating, averageRating, addFeedback, addSolution, addComment, voteSolution, markHelpful, awardBadge, getBadges, clearAll }

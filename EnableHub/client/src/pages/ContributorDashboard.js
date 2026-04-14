@@ -1,19 +1,36 @@
 import React, { useEffect, useState, useMemo } from 'react'
 import { Link } from 'react-router-dom'
 import * as svc from '../services/communityService'
+import {
+  Box,
+  Button,
+  Card,
+  CardContent,
+  Chip,
+  Container,
+  Divider,
+  MenuItem,
+  Stack,
+  TextField,
+  Typography
+} from '@mui/material'
 
 function ProblemCard({p, onOpen}){
   return (
-    <article className="card" style={{padding:12}}>
-      <h4>{p.title}</h4>
-      <div style={{color:'var(--muted)'}}>{p.description}</div>
-      <div style={{marginTop:8, fontSize:13, color:'#666'}}>Context: {p.learnerContext || '—'}</div>
-      <div style={{marginTop:8, fontSize:13, color:'#666'}}>Status: {p.status}</div>
-      <div style={{marginTop:8, display:'flex', gap:8}}>
-        <button className="btn btn-primary" onClick={()=>onOpen(p)}>Open</button>
-        <Link to={`/showcase/${p.id}`} className="btn">View</Link>
-      </div>
-    </article>
+    <Card variant="outlined">
+      <CardContent>
+        <Typography variant="h6">{p.title}</Typography>
+        <Typography color="text.secondary" sx={{ mb: 1.5 }}>{p.description}</Typography>
+        <Stack direction="row" spacing={1} sx={{ mb: 1 }}>
+          <Chip size="small" label={`Context: ${p.learnerContext || 'General'}`} />
+          <Chip size="small" label={`Status: ${p.status}`} color="primary" variant="outlined" />
+        </Stack>
+        <Stack direction="row" spacing={1}>
+          <Button variant="contained" onClick={()=>onOpen(p)} aria-label={`Open ${p.title}`}>Open</Button>
+          <Button component={Link} to={`/showcase/${p.id}`} variant="outlined">View</Button>
+        </Stack>
+      </CardContent>
+    </Card>
   )
 }
 
@@ -114,115 +131,122 @@ export default function ContributorDashboard(){
 
   return (
     <main className="page">
-      <section className="page-hero">
-        <div className="hero-text">
-          <h2 className="hero-title">You’re joining a community of problem-solvers.</h2>
-          <p className="hero-lead">Let’s make tech more inclusive together.</p>
-          <div style={{marginTop:8}}><strong>Welcome, {user.username || user.email}</strong></div>
-        </div>
-      </section>
+      <Container maxWidth="lg" sx={{ py: 3 }}>
+        <Typography variant="h4" gutterBottom>Contributor Dashboard</Typography>
+        <Typography color="text.secondary" sx={{ mb: 2 }}>Welcome, {user.username || user.email}. Solve real accessibility barriers with clear, high-contrast workflows.</Typography>
 
-      <div style={{maxWidth:1100, margin:'18px auto', display:'grid', gap:16}}>
-        <div style={{display:'grid', gridTemplateColumns:'2fr 1fr', gap:16}}>
-          <div>
-            <div style={{display:'flex', gap:8, alignItems:'center'}}>
-              <label>Category:</label>
-              <select value={category} onChange={e=>setCategory(e.target.value)}>
-                <option value="">All</option>
-                {categories.map(c=> <option key={c} value={c}>{c}</option>)}
-              </select>
-              <label>Urgency:</label>
-              <select value={urgency} onChange={e=>setUrgency(e.target.value)}>
-                <option value="">All</option>
-                <option value="low">Low</option>
-                <option value="normal">Normal</option>
-                <option value="high">High</option>
-              </select>
-              <button className="btn" onClick={applyFilters}>Apply</button>
-            </div>
+        <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', lg: '2fr 1fr' }, gap: 2 }}>
+          <Box>
+            <Card variant="outlined" sx={{ mb: 2 }}>
+              <CardContent>
+                <Stack direction={{ xs: 'column', md: 'row' }} spacing={1.5} alignItems={{ xs: 'stretch', md: 'center' }}>
+                  <TextField select label="Category" value={category} onChange={e=>setCategory(e.target.value)}>
+                    <MenuItem value="">All</MenuItem>
+                    {categories.map(c=> <MenuItem key={c} value={c}>{c}</MenuItem>)}
+                  </TextField>
+                  <TextField select label="Urgency" value={urgency} onChange={e=>setUrgency(e.target.value)}>
+                    <MenuItem value="">All</MenuItem>
+                    <MenuItem value="low">Low</MenuItem>
+                    <MenuItem value="normal">Normal</MenuItem>
+                    <MenuItem value="high">High</MenuItem>
+                  </TextField>
+                  <Button variant="contained" onClick={applyFilters}>Apply filters</Button>
+                </Stack>
+              </CardContent>
+            </Card>
 
-            <h3 style={{marginTop:12}}>Open Problems</h3>
-            <div style={{display:'grid', gap:10}}>
-              {problems.length===0 && <div className="card">No open problems yet — check back or invite learners to submit.</div>}
+            <Stack spacing={1.5}>
+              {problems.length===0 && <Card><CardContent><Typography>No open problems yet. Invite learners to submit.</Typography></CardContent></Card>}
               {problems.map(p => <ProblemCard key={p.id} p={p} onOpen={openProblem} />)}
-            </div>
+            </Stack>
 
             {selected && (
-              <div style={{marginTop:16}} className="card">
-                <h4>Suggest Solution — {selected.title}</h4>
-                <div style={{fontSize:13, color:'#444', marginBottom:8}}>{selected.description}</div>
-                <div style={{background:'#f9f9f9', padding:10, borderRadius:6}}>
-                  <strong>Accessibility hints:</strong>
+              <Card variant="outlined" sx={{ mt: 2 }}>
+                <CardContent>
+                  <Typography variant="h6" gutterBottom>Suggest Solution: {selected.title}</Typography>
+                  <Typography color="text.secondary" sx={{ mb: 1 }}>{selected.description}</Typography>
+                  <Typography variant="subtitle2" sx={{ mb: 1 }}>Accessibility hints</Typography>
                   <ul>
-                    <li>Keep language simple and direct.</li>
-                    <li>Explain why the solution works for assistive tech.</li>
-                    <li>Provide code with comments and clear examples.</li>
+                    <li>Keep language clear and direct.</li>
+                    <li>Explain assistive technology impact.</li>
+                    <li>Provide implementation steps.</li>
                   </ul>
-                </div>
-                <div style={{marginTop:8}}>
-                  <textarea aria-label="Solution draft" value={draft} onChange={e=>setDraft(e.target.value)} style={{width:'100%', minHeight:140}} placeholder="Explain your solution, steps, and rationale..." />
-                </div>
-                <div style={{marginTop:8}}>
-                  <label className="btn">Attach files<input type="file" onChange={onAttach} style={{display:'none'}} multiple/></label>
-                  <span style={{marginLeft:8}}>{attachments.length} attachment(s)</span>
-                </div>
-                <div style={{marginTop:8}}>
-                  <button className="btn btn-primary" onClick={submitSolution}>Suggest Solution</button>
-                  <button className="btn" onClick={()=>setSelected(null)} style={{marginLeft:8}}>Cancel</button>
-                </div>
+                  <TextField
+                    label="Solution draft"
+                    aria-label="Solution draft"
+                    value={draft}
+                    onChange={e=>setDraft(e.target.value)}
+                    multiline
+                    minRows={6}
+                    placeholder="Explain your solution, steps, and rationale..."
+                    sx={{ mt: 1 }}
+                  />
+                  <Stack direction="row" spacing={1} alignItems="center" sx={{ mt: 1 }}>
+                    <Button component="label" variant="outlined">Attach files
+                      <input type="file" onChange={onAttach} hidden multiple />
+                    </Button>
+                    <Typography variant="body2" color="text.secondary">{attachments.length} attachment(s)</Typography>
+                  </Stack>
+                  <Stack direction="row" spacing={1} sx={{ mt: 1.5 }}>
+                    <Button variant="contained" onClick={submitSolution}>Suggest Solution</Button>
+                    <Button variant="outlined" onClick={()=>setSelected(null)}>Cancel</Button>
+                  </Stack>
 
-                <div style={{marginTop:12}}>
-                  <h5>Existing Solutions</h5>
-                  {(selected.solutions||[]).map(sol=> (
-                    <div key={sol.id} className="card" style={{padding:10, marginTop:8}}>
-                      <div style={{display:'flex', justifyContent:'space-between'}}>
-                        <div><strong>{sol.authorEmail}</strong> <span style={{color:'#666', fontSize:12}}> — {new Date(sol.createdAt).toLocaleString()}</span></div>
-                        <div style={{display:'flex', gap:8}}>
-                          <button className="btn" onClick={()=>vote(sol.id, true)}>▲ {sol.upvotes||0}</button>
-                          <button className="btn" onClick={()=>vote(sol.id, false)}>▼ {sol.downvotes||0}</button>
-                          <button className="btn" onClick={()=>markHelpfulAction(sol.id)}>Mark helpful</button>
-                        </div>
-                      </div>
-                      <div style={{marginTop:8}}>{sol.content}</div>
-                      <div style={{marginTop:8}}>
-                        <strong>Comments</strong>
-                        {(sol.comments||[]).map(c=> (
-                          <div key={c.id} style={{marginTop:6, padding:6, borderLeft:'2px solid #eee'}}>
-                            <div style={{fontSize:13}}><strong>{c.authorEmail}</strong> <span style={{color:'#666', fontSize:12}}>{new Date(c.createdAt).toLocaleString()}</span></div>
-                            <div style={{marginTop:4}}>{c.text}</div>
-                          </div>
-                        ))}
-                        <div style={{marginTop:8}}>
+                  <Divider sx={{ my: 2 }} />
+                  <Typography variant="subtitle1">Existing solutions</Typography>
+                  <Stack spacing={1.5} sx={{ mt: 1 }}>
+                    {(selected.solutions||[]).map(sol=> (
+                      <Card key={sol.id} variant="outlined">
+                        <CardContent>
+                          <Stack direction={{ xs: 'column', sm: 'row' }} justifyContent="space-between" spacing={1}>
+                            <Typography variant="body2"><strong>{sol.authorEmail}</strong> - {new Date(sol.createdAt).toLocaleString()}</Typography>
+                            <Stack direction="row" spacing={1}>
+                              <Button size="small" onClick={()=>vote(sol.id, true)}>▲ {sol.upvotes||0}</Button>
+                              <Button size="small" onClick={()=>vote(sol.id, false)}>▼ {sol.downvotes||0}</Button>
+                              <Button size="small" onClick={()=>markHelpfulAction(sol.id)}>Helpful</Button>
+                            </Stack>
+                          </Stack>
+                          <Typography sx={{ mt: 1 }}>{sol.content}</Typography>
+                          {(sol.comments||[]).map(c=> (
+                            <Box key={c.id} sx={{ mt: 1, pl: 1.5, borderLeft: '3px solid', borderColor: 'divider' }}>
+                              <Typography variant="body2"><strong>{c.authorEmail}</strong> - {new Date(c.createdAt).toLocaleString()}</Typography>
+                              <Typography variant="body2">{c.text}</Typography>
+                            </Box>
+                          ))}
                           <CommentBox onSubmit={(txt)=>submitComment(sol.id, txt)} />
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
+                        </CardContent>
+                      </Card>
+                    ))}
+                  </Stack>
+                </CardContent>
+              </Card>
             )}
-          </div>
+          </Box>
 
-          <aside>
-            <div className="card">
-              <h4>Impact</h4>
-              <p style={{margin:0}}>You’ve helped <strong>{impactCount}</strong> learner(s).</p>
-              <div style={{marginTop:8}}>
-                <strong>Badges</strong>
-                <div style={{marginTop:8}}>{badges.length===0 ? <div>No badges yet</div> : badges.map(b=> <div key={b} className="badge">{b}</div>)}</div>
-              </div>
-            </div>
+          <Stack spacing={2}>
+            <Card>
+              <CardContent>
+                <Typography variant="h6">Impact</Typography>
+                <Typography>You have helped <strong>{impactCount}</strong> learner(s).</Typography>
+                <Typography sx={{ mt: 1, fontWeight: 700 }}>Badges</Typography>
+                <Stack direction="row" gap={1} flexWrap="wrap" sx={{ mt: 1 }}>
+                  {badges.length===0 ? <Typography variant="body2">No badges yet</Typography> : badges.map(b=> <Chip key={b} label={b} color="secondary" />)}
+                </Stack>
+              </CardContent>
+            </Card>
 
-            <div className="card" style={{marginTop:12}}>
-              <h4>Quick links</h4>
-              <div style={{display:'grid', gap:8}}>
-                <Link to="/showcase" className="btn">Community Showcase</Link>
-                <Link to="/submit" className="btn">Invite a learner to submit</Link>
-              </div>
-            </div>
-          </aside>
-        </div>
-      </div>
+            <Card>
+              <CardContent>
+                <Typography variant="h6">Quick links</Typography>
+                <Stack spacing={1} sx={{ mt: 1 }}>
+                  <Button component={Link} to="/showcase" variant="outlined">Community Showcase</Button>
+                  <Button component={Link} to="/submit" variant="outlined">Invite learner submissions</Button>
+                </Stack>
+              </CardContent>
+            </Card>
+          </Stack>
+        </Box>
+      </Container>
     </main>
   )
 }
@@ -230,9 +254,9 @@ export default function ContributorDashboard(){
 function CommentBox({onSubmit}){
   const [txt, setTxt] = useState('')
   return (
-    <div style={{display:'flex', gap:8, marginTop:6}}>
-      <input aria-label="Comment" value={txt} onChange={e=>setTxt(e.target.value)} style={{flex:1}} />
-      <button className="btn" onClick={()=>{ if(txt.trim()){ onSubmit(txt); setTxt('') } }}>Comment</button>
-    </div>
+    <Stack direction="row" spacing={1} sx={{ mt: 1 }}>
+      <TextField aria-label="Comment" size="small" value={txt} onChange={e=>setTxt(e.target.value)} placeholder="Add a comment" />
+      <Button variant="outlined" onClick={()=>{ if(txt.trim()){ onSubmit(txt); setTxt('') } }}>Comment</Button>
+    </Stack>
   )
 }

@@ -1,9 +1,10 @@
 import React from 'react'
 import './index.css'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { ThemeProvider, CssBaseline } from '@mui/material'
 import Navbar from './components/Navbar'
-import AccessibilityBar from './components/AccessibilityBar'
-import { AccessibilityProvider } from './context/AccessibilityContext'
+import { AccessibilityProvider, useAccessibility } from './context/AccessibilityContext'
+import { buildAppTheme } from './theme'
 import Landing from './pages/Landing'
 import Cognitive from './pages/Cognitive'
 import Hearing from './pages/Hearing'
@@ -29,6 +30,18 @@ import ProtectedRoute from './components/ProtectedRoute'
 export default function App() {
   return (
     <AccessibilityProvider>
+      <AppShell />
+    </AccessibilityProvider>
+  )
+}
+
+function AppShell() {
+  const { dark, contrast, fontSize } = useAccessibility()
+  const theme = React.useMemo(() => buildAppTheme({ dark, contrast, fontSize }), [dark, contrast, fontSize])
+
+  return (
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
         <BrowserRouter>
       <Navbar />
         <main id="main" role="main">
@@ -68,6 +81,6 @@ export default function App() {
       </Routes>
       </main>
       </BrowserRouter>
-    </AccessibilityProvider>
+    </ThemeProvider>
   )
 }

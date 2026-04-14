@@ -1,5 +1,17 @@
 import React, { useEffect, useState } from 'react'
 import * as svc from '../services/communityService'
+import {
+  Box,
+  Button,
+  Card,
+  CardContent,
+  Chip,
+  Container,
+  Rating,
+  Stack,
+  TextField,
+  Typography
+} from '@mui/material'
 
 export default function Showcase(){
   const [items, setItems] = useState([])
@@ -33,90 +45,106 @@ export default function Showcase(){
   }
 
   return (
-    <div className="page">
-      <h2 className="section-title">Community Solutions Showcase</h2>
-      <p style={{textAlign:'center', color:'var(--muted)'}}>Share small accessibility tips, CSS snippets, extensions, and hacks. Others can rate and leave feedback.</p>
+    <Container maxWidth="lg" sx={{ py: 3 }}>
+      <Typography variant="h4" gutterBottom>Community Solutions Showcase</Typography>
+      <Typography color="text.secondary" sx={{ mb: 2 }}>Share accessibility tips, code snippets, and extensions. Rate ideas and discuss improvements with the community.</Typography>
 
-      <div style={{display:'grid', gridTemplateColumns:'1fr 360px', gap:20, marginTop:18}}>
-        <div>
-          <div className="card">
-            <h3>Submit a solution</h3>
-            <label style={{display:'block', marginTop:8}}>Title</label>
-            <input style={{width:'100%', padding:8}} value={title} onChange={(e)=>setTitle(e.target.value)} />
-            <label style={{display:'block', marginTop:8}}>URL (optional)</label>
-            <input style={{width:'100%', padding:8}} value={url} onChange={(e)=>setUrl(e.target.value)} />
-            <label style={{display:'block', marginTop:8}}>Tags (comma separated)</label>
-            <input style={{width:'100%', padding:8}} value={tags} onChange={(e)=>setTags(e.target.value)} />
-            <label style={{display:'block', marginTop:8}}>Description</label>
-            <textarea style={{width:'100%', padding:8}} rows={6} value={description} onChange={(e)=>setDescription(e.target.value)} />
-            <div style={{display:'flex', justifyContent:'flex-end', marginTop:8}}>
-              <button className="btn btn-primary" onClick={submit}>Submit</button>
-            </div>
-          </div>
+      <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', lg: '2fr 1fr' }, gap: 2 }}>
+        <Box>
+          <Card sx={{ mb: 2 }}>
+            <CardContent>
+              <Typography variant="h6" gutterBottom>Submit a solution</Typography>
+              <Stack spacing={1.5}>
+                <TextField label="Title" value={title} onChange={(e)=>setTitle(e.target.value)} />
+                <TextField label="URL (optional)" value={url} onChange={(e)=>setUrl(e.target.value)} />
+                <TextField label="Tags (comma separated)" value={tags} onChange={(e)=>setTags(e.target.value)} />
+                <TextField label="Description" multiline minRows={4} value={description} onChange={(e)=>setDescription(e.target.value)} />
+                <Stack direction="row" justifyContent="flex-end">
+                  <Button variant="contained" onClick={submit}>Submit</Button>
+                </Stack>
+              </Stack>
+            </CardContent>
+          </Card>
 
-          <div style={{marginTop:18}}>
-            <h3>Gallery</h3>
-            <div className="card-grid">
-              {items.length===0 && <div className="card">No submissions yet — be the first!</div>}
-              {items.map(it=> (
-                <div key={it.id} className="problem-card">
-                  <h4>{it.title}</h4>
-                  <div style={{color:'var(--muted)', marginBottom:8}}>{it.description}</div>
-                  {it.url && <a href={it.url} target="_blank" rel="noreferrer">Link</a>}
-                  <div style={{marginTop:8, display:'flex', alignItems:'center', gap:8}}>
-                    <div style={{display:'flex', gap:6, alignItems:'center'}}>
-                      <span style={{fontSize:13, color:'var(--muted)'}}>Rating:</span>
-                      <strong>{svc.averageRating(it) || '—'}</strong>
-                    </div>
-                    <div style={{marginLeft:'auto', display:'flex', gap:6}}>
-                      {[1,2,3,4,5].map(s=> (
-                        <button key={s} className="btn" onClick={()=>doRate(it.id, s)} aria-label={`Rate ${s} stars`}>{s}★</button>
-                      ))}
-                    </div>
-                  </div>
+          <Stack spacing={1.5}>
+            {items.length===0 && <Card><CardContent><Typography>No submissions yet. Be the first.</Typography></CardContent></Card>}
+            {items.map(it=> (
+              <Card key={it.id} variant="outlined">
+                <CardContent>
+                  <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ mb: 1 }}>
+                    <Typography variant="h6">{it.title}</Typography>
+                    {it.tags?.length > 0 && <Chip size="small" label={it.tags[0]} />}
+                  </Stack>
+                  <Typography color="text.secondary" sx={{ mb: 1 }}>{it.description}</Typography>
+                  {it.url && <Button href={it.url} target="_blank" rel="noreferrer" size="small" variant="outlined">Open resource</Button>}
 
-                  <div style={{marginTop:8}}>
-                    <div style={{fontSize:13, color:'var(--muted)'}}>Feedback</div>
-                    <textarea rows={2} style={{width:'100%', padding:8, marginTop:6}} value={feedbackText} onChange={(e)=>setFeedbackText(e.target.value)} placeholder="Leave feedback for this solution" />
-                    <div style={{display:'flex', justifyContent:'flex-end', marginTop:6}}>
-                      <button className="btn" onClick={()=>doFeedback(it.id)}>Send</button>
-                    </div>
+                  <Stack direction={{ xs: 'column', sm: 'row' }} spacing={1.5} alignItems={{ xs: 'flex-start', sm: 'center' }} sx={{ mt: 1.5 }}>
+                    <Stack direction="row" spacing={1} alignItems="center">
+                      <Typography variant="body2">Rating:</Typography>
+                      <Rating readOnly value={Number(svc.averageRating(it)) || 0} precision={0.5} />
+                      <Typography variant="body2" fontWeight={700}>{svc.averageRating(it) || '0.0'}</Typography>
+                    </Stack>
+                    <Rating
+                      name={`rate-${it.id}`}
+                      value={rating}
+                      onChange={(_, value)=>{
+                        if(value){ setRating(value); doRate(it.id, value) }
+                      }}
+                      aria-label={`Rate solution ${it.title}`}
+                    />
+                  </Stack>
+
+                  <Box sx={{ mt: 1.5 }}>
+                    <Typography variant="subtitle2" color="text.secondary">Community feedback</Typography>
+                    <TextField
+                      multiline
+                      minRows={2}
+                      value={feedbackText}
+                      onChange={(e)=>setFeedbackText(e.target.value)}
+                      placeholder="Leave feedback for this solution"
+                      sx={{ mt: 1 }}
+                    />
+                    <Stack direction="row" justifyContent="flex-end" sx={{ mt: 1 }}>
+                      <Button variant="outlined" onClick={()=>doFeedback(it.id)}>Send</Button>
+                    </Stack>
                     {it.feedback && it.feedback.length>0 && (
-                      <div style={{marginTop:8}}>
-                        <div style={{fontSize:13, color:'var(--muted)'}}>Recent feedback</div>
-                        <ul>
-                          {it.feedback.slice(0,3).map((f,idx)=>(<li key={idx}><strong>{f.author}:</strong> {f.text}</li>))}
-                        </ul>
-                      </div>
+                      <Stack spacing={0.75} sx={{ mt: 1 }}>
+                        {it.feedback.slice(0,3).map((f,idx)=>(
+                          <Typography key={idx} variant="body2"><strong>{f.author}:</strong> {f.text}</Typography>
+                        ))}
+                      </Stack>
                     )}
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
+                  </Box>
+                </CardContent>
+              </Card>
+            ))}
+          </Stack>
+        </Box>
 
-        <aside>
-          <div className="card">
-            <h3>How to write a good solution</h3>
-            <ul>
-              <li>Be specific and actionable (CSS snippet or exact extension name)</li>
-              <li>Include links where users can find the tool</li>
-              <li>Short examples are best</li>
-              <li>Tag with related categories like <code>CSS</code>, <code>browser-extension</code>, <code>dyslexia</code></li>
-            </ul>
-          </div>
-
-          <div className="card" style={{marginTop:12}}>
-            <h3>Community guidelines</h3>
-            <ul>
-              <li>Be respectful</li>
-              <li>No malicious code</li>
-              <li>Prefer open-source or well-known tools</li>
-            </ul>
-          </div>
-        </aside>
-      </div>
-    </div>
+        <Stack spacing={1.5}>
+          <Card>
+            <CardContent>
+              <Typography variant="h6" gutterBottom>How to write a good solution</Typography>
+              <ul>
+                <li>Be specific and actionable.</li>
+                <li>Include links to tools or docs.</li>
+                <li>Keep examples short and practical.</li>
+                <li>Tag related categories like CSS, browser-extension, or dyslexia.</li>
+              </ul>
+            </CardContent>
+          </Card>
+          <Card>
+            <CardContent>
+              <Typography variant="h6" gutterBottom>Community guidelines</Typography>
+              <ul>
+                <li>Be respectful and constructive.</li>
+                <li>No malicious code.</li>
+                <li>Prefer open-source or trusted tools.</li>
+              </ul>
+            </CardContent>
+          </Card>
+        </Stack>
+      </Box>
+    </Container>
   )
 }

@@ -1,6 +1,24 @@
 import React, { useState, useRef } from 'react'
 import * as svc from '../services/communityService'
 import { useNavigate } from 'react-router-dom'
+import {
+  Alert,
+  Box,
+  Button,
+  Card,
+  CardContent,
+  Chip,
+  Container,
+  FormControl,
+  FormControlLabel,
+  FormLabel,
+  Radio,
+  RadioGroup,
+  Stack,
+  Switch,
+  TextField,
+  Typography
+} from '@mui/material'
 
 const CATEGORIES = ['Hearing','Visual','Mobility','Cognitive','Speech','Neurodivergent']
 
@@ -88,76 +106,95 @@ export default function SubmitProblem(){
 
   return (
     <main className="page">
-      <section className="page-hero">
-        <div className="hero-text">
-          <h2 className="hero-title">Describe your challenge — we’ll help you solve it.</h2>
-          <p className="hero-lead">Short instructions: write in plain language and include examples like “Captions lag behind audio” or “I need transcripts after sessions”.</p>
-        </div>
-      </section>
+      <Container maxWidth="md" sx={{ py: 3 }}>
+        <Typography variant="h4" gutterBottom>Describe your challenge</Typography>
+        <Typography color="text.secondary" sx={{ mb: 2 }}>Share clear steps, expected behavior, and accessibility impact. Contributors will respond with practical solutions.</Typography>
 
-      <form onSubmit={submit} style={{maxWidth:900, margin:'18px auto'}} className={largeFont ? 'large-font-form' : undefined}>
-        <div className="card">
-          <label style={{display:'block', marginTop:6}}>Title</label>
-          <input aria-label="Problem title" placeholder="Short title (e.g., Captions lag behind audio)" style={{width:'100%', padding:8, fontSize: largeFont ? 20 : 14}} value={title} onChange={(e)=>setTitle(e.target.value)} />
+        <Card>
+          <CardContent>
+            <Box component="form" onSubmit={submit} className={largeFont ? 'large-font-form' : undefined}>
+              <Stack spacing={2}>
+                <TextField
+                  label="Title"
+                  aria-label="Problem title"
+                  placeholder="Short title (e.g., Captions lag behind audio)"
+                  value={title}
+                  onChange={(e)=>setTitle(e.target.value)}
+                  InputProps={{ sx: { fontSize: largeFont ? 22 : 16 } }}
+                />
 
-          <label style={{display:'block', marginTop:12}}>Describe your issue</label>
-          <textarea aria-label="Problem description" placeholder="Explain your issue in simple words (what happened, where, steps to reproduce)..." rows={6} style={{width:'100%', padding:8, fontSize: largeFont ? 18 : 14}} value={description} onChange={(e)=>setDescription(e.target.value)} />
+                <TextField
+                  label="Describe your issue"
+                  aria-label="Problem description"
+                  placeholder="Explain what happened, where it happened, and steps to reproduce"
+                  value={description}
+                  onChange={(e)=>setDescription(e.target.value)}
+                  multiline
+                  minRows={6}
+                  InputProps={{ sx: { fontSize: largeFont ? 20 : 16 } }}
+                />
 
-          <div style={{display:'flex', gap:8, marginTop:8, alignItems:'center'}}>
-            <button type="button" className="btn" onClick={toggleListen} aria-pressed={listening}>{listening ? 'Stop voice input' : 'Voice-to-text'}</button>
-            <button type="button" className="btn btn-secondary" onClick={()=>setLargeFont(v=>!v)} aria-pressed={largeFont}>{largeFont ? 'Normal font' : 'Large font'}</button>
-          </div>
+                <Stack direction="row" spacing={1}>
+                  <Button type="button" variant="outlined" onClick={toggleListen} aria-pressed={listening}>{listening ? 'Stop voice input' : 'Voice-to-text'}</Button>
+                  <FormControlLabel control={<Switch checked={largeFont} onChange={()=>setLargeFont(v=>!v)} />} label="Large text mode" />
+                </Stack>
 
-          <label style={{display:'block', marginTop:12}}>Attach supporting files (optional)</label>
-          <input ref={fileInputRef} type="file" multiple onChange={(e)=>onFiles(e.target.files)} aria-label="Attach files" />
-          {attachments.length>0 && (
-            <div style={{marginTop:8}}>
-              {attachments.map((a,i)=> (
-                <div key={i} style={{display:'flex', justifyContent:'space-between', alignItems:'center', padding:8, border:'1px solid #eee', marginTop:6}}>
-                  <div>
-                    <strong>{a.name}</strong>
-                    <div style={{fontSize:12, color:'#666'}}>{Math.round(a.size/1024)} KB</div>
-                  </div>
-                  <div><button type="button" className="btn" onClick={()=>removeAttachment(i)}>Remove</button></div>
-                </div>
-              ))}
-            </div>
-          )}
+                <Box>
+                  <Typography variant="subtitle1" sx={{ mb: 1 }}>Categories</Typography>
+                  <Stack direction="row" flexWrap="wrap" gap={1}>
+                    {CATEGORIES.map(c=> (
+                      <Chip
+                        key={c}
+                        label={c}
+                        clickable
+                        color={tags.includes(c) ? 'primary' : 'default'}
+                        variant={tags.includes(c) ? 'filled' : 'outlined'}
+                        onClick={()=>toggleTag(c)}
+                        aria-label={`Toggle category ${c}`}
+                      />
+                    ))}
+                  </Stack>
+                </Box>
 
-          <div style={{display:'grid', gridTemplateColumns:'1fr 1fr', gap:12, marginTop:12}}>
-            <div>
-              <label style={{display:'block'}}>Category</label>
-              <div style={{display:'flex', flexWrap:'wrap', gap:8, marginTop:6}}>
-                {CATEGORIES.map(c=> (
-                  <label key={c} style={{display:'inline-flex', alignItems:'center', gap:6}}>
-                    <input type="checkbox" checked={tags.includes(c)} onChange={()=>toggleTag(c)} />
-                    <span>{c}</span>
-                  </label>
-                ))}
-              </div>
-            </div>
+                <FormControl>
+                  <FormLabel id="severity-label">Severity / Priority</FormLabel>
+                  <RadioGroup row aria-labelledby="severity-label" value={severity} onChange={(e)=>setSeverity(e.target.value)}>
+                    <FormControlLabel value="minor" control={<Radio />} label="Minor inconvenience" />
+                    <FormControlLabel value="major" control={<Radio />} label="Major barrier" />
+                  </RadioGroup>
+                </FormControl>
 
-            <div>
-              <label style={{display:'block'}}>Severity / Priority</label>
-              <div style={{marginTop:6}}>
-                <label style={{display:'block'}}><input type="radio" name="sev" checked={severity==='minor'} onChange={()=>setSeverity('minor')} /> Minor inconvenience</label>
-                <label style={{display:'block'}}><input type="radio" name="sev" checked={severity==='major'} onChange={()=>setSeverity('major')} /> Major barrier</label>
-              </div>
-            </div>
-          </div>
+                <Box>
+                  <Button component="label" variant="outlined">Attach files
+                    <input ref={fileInputRef} type="file" multiple onChange={(e)=>onFiles(e.target.files)} hidden aria-label="Attach files" />
+                  </Button>
+                  {attachments.length > 0 && (
+                    <Stack spacing={1} sx={{ mt: 1 }}>
+                      {attachments.map((a,i)=> (
+                        <Stack key={i} direction="row" justifyContent="space-between" alignItems="center" sx={{ p: 1, border: '1px solid', borderColor: 'divider', borderRadius: 1 }}>
+                          <Typography>{a.name} ({Math.round(a.size/1024)} KB)</Typography>
+                          <Button type="button" size="small" onClick={()=>removeAttachment(i)}>Remove</Button>
+                        </Stack>
+                      ))}
+                    </Stack>
+                  )}
+                </Box>
 
-          {error && <div role="alert" style={{color:'var(--danger, #d9534f)', marginTop:12}}>{error}</div>}
-          {statusMsg && <div role="status" style={{color:'var(--success, #2f855a)', marginTop:12}}>{statusMsg}</div>}
+                {error && <Alert severity="error" role="alert">{error}</Alert>}
+                {statusMsg && <Alert severity="success" role="status">{statusMsg}</Alert>}
 
-          <div style={{display:'flex', justifyContent:'space-between', marginTop:12, alignItems:'center'}}>
-            <div style={{color:'#666'}}><small>Need help drafting? Try a short example sentence describing the issue.</small></div>
-            <div>
-              <button type="button" className="btn" onClick={()=>{ setTitle(''); setDescription(''); setTags([]); setAttachments([]); setSeverity('minor'); setStatusMsg(''); }}>Reset</button>
-              <button className="btn btn-primary" style={{marginLeft:8}} onClick={submit}>Submit Problem</button>
-            </div>
-          </div>
-        </div>
-      </form>
+                <Stack direction="row" justifyContent="space-between" alignItems="center">
+                  <Typography variant="body2" color="text.secondary">Need help drafting? Start with one sentence about the barrier.</Typography>
+                  <Stack direction="row" spacing={1}>
+                    <Button type="button" variant="outlined" onClick={()=>{ setTitle(''); setDescription(''); setTags([]); setAttachments([]); setSeverity('minor'); setStatusMsg(''); }}>Reset</Button>
+                    <Button type="submit" variant="contained">Submit Problem</Button>
+                  </Stack>
+                </Stack>
+              </Stack>
+            </Box>
+          </CardContent>
+        </Card>
+      </Container>
     </main>
   )
 }
